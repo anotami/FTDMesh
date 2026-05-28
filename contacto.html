@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contacto — FTDMESH | Soporte Meshtastic Perú</title>
+  <meta name="description" content="Contáctanos para soporte técnico, cotizaciones empresariales o consultas sobre Meshtastic en Perú. WhatsApp, email y formulario de contacto." />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'bg-main':  '#080c14',
+            'bg-card':  '#0f1624',
+            'bg-hover': '#1a2340',
+            'border-card': '#1e2d4a',
+          }
+        }
+      }
+    }
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <link rel="stylesheet" href="./assets/css/style.css" />
+  <script src="./assets/js/data.js"></script>
+  <script src="./assets/js/main.js"></script>
+</head>
+
+<body class="bg-bg-main text-slate-100" x-data="ftdmesh()" x-init="init()">
+
+<!-- ═══ NAVBAR ═══════════════════════════════════════════ -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 border-b border-border-card"
+     style="background: rgba(8,12,20,0.95); backdrop-filter: blur(20px);">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <a href="./index.html" class="flex items-center gap-2.5 shrink-0">
+        <div class="w-8 h-8 text-orange-500">
+          <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="3" fill="currentColor"/><path d="M16 16 Q20 10 26 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.9"/><path d="M16 16 Q21 16 27 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.7"/><path d="M16 16 Q12 10 6 8" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.6"/></svg>
+        </div>
+        <span class="font-bold text-xl tracking-tight text-slate-100">FTD<span style="color:#f97316">MESH</span></span>
+      </a>
+      <div class="hidden lg:flex items-center gap-1">
+        <div class="nav-item relative" @mouseenter="openDropdown('productos')" @mouseleave="closeDropdown()">
+          <button class="flex items-center gap-1 px-4 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5">
+            Productos <svg class="w-4 h-4 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="nav-dropdown" x-show="activeDropdown === 'productos'" x-transition:enter="transition ease-out duration-150" x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-1 translate-y-0">
+            <a href="./productos.html">📡 Dispositivos</a>
+            <a href="./productos.html#accesorios">🔧 Accesorios</a>
+            <a href="./productos.html#bundles">📦 Bundles</a>
+            <a href="./index.html#membresias">⭐ Membresías</a>
+          </div>
+        </div>
+        <div class="nav-item relative" @mouseenter="openDropdown('industrias')" @mouseleave="closeDropdown()">
+          <button class="flex items-center gap-1 px-4 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5">
+            Industrias <svg class="w-4 h-4 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="nav-dropdown" x-show="activeDropdown === 'industrias'" x-transition:enter="transition ease-out duration-150" x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-1 translate-y-0">
+            <a href="./industrias.html#outdoor">🏔️ Outdoor</a>
+            <a href="./industrias.html#agricultura">🌾 Agricultura</a>
+            <a href="./industrias.html#seguridad">🛡️ Seguridad</a>
+            <a href="./industrias.html#emergencias">🚨 Emergencias</a>
+            <a href="./industrias.html#mineria">⛏️ Minería</a>
+          </div>
+        </div>
+        <a href="./eventos.html" class="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5">Eventos</a>
+        <a href="#" class="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5">Foro</a>
+        <a href="./contacto.html" class="px-4 py-2 text-sm font-medium text-orange-400 rounded-lg bg-orange-500/10">Contacto</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="hidden sm:flex items-center bg-bg-card border border-border-card rounded-lg overflow-hidden text-xs font-bold">
+          <button @click="setCurrency('PEN')" :class="currency === 'PEN' ? 'bg-orange-500 text-white' : 'text-slate-400'" class="px-3 py-1.5 transition-all">PEN</button>
+          <button @click="setCurrency('USD')" :class="currency === 'USD' ? 'bg-orange-500 text-white' : 'text-slate-400'" class="px-3 py-1.5 transition-all">USD</button>
+        </div>
+        <button @click="cartOpen = true" class="relative flex items-center gap-2 bg-bg-card border border-border-card hover:border-orange-500/50 rounded-lg px-3 py-1.5 text-sm font-medium text-slate-300 hover:text-white transition-all">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          <span class="hidden sm:inline">Carrito</span>
+          <span x-show="cartCount > 0" x-text="cartCount" class="absolute -top-1.5 -right-1.5 w-5 h-5 bg-orange-500 text-white text-xs font-bold rounded-full flex items-center justify-center"></span>
+        </button>
+        <button @click="toggleMobileMenu()" class="lg:hidden p-2 rounded-lg border border-border-card text-slate-300">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-menu lg:hidden" :class="mobileMenuOpen ? 'open' : ''">
+    <div class="space-y-1">
+      <a href="./index.html" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 rounded-lg" @click="closeMobileMenu()">🏠 Inicio</a>
+      <a href="./productos.html" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 rounded-lg" @click="closeMobileMenu()">📡 Productos</a>
+      <a href="./industrias.html" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 rounded-lg" @click="closeMobileMenu()">🏭 Industrias</a>
+      <a href="./eventos.html" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 rounded-lg" @click="closeMobileMenu()">📅 Eventos</a>
+      <a href="./contacto.html" class="flex items-center gap-2 px-3 py-2 text-sm text-orange-400 bg-orange-500/10 rounded-lg">✉️ Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Cart sidebar -->
+<div x-show="cartOpen" class="cart-overlay" @click="cartOpen = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"></div>
+<div x-show="cartOpen" class="cart-sidebar" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full">
+  <div class="flex items-center justify-between p-5 border-b border-border-card shrink-0">
+    <div><h2 class="font-bold text-lg">Carrito</h2><p class="text-xs text-slate-500" x-text="`${cartCount} producto(s)`"></p></div>
+    <button @click="cartOpen = false" class="p-2 rounded-lg hover:bg-white/5 text-slate-400"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+  </div>
+  <div class="flex-1 overflow-y-auto p-5">
+    <div x-show="cartItems.length === 0" class="text-center py-12"><div class="text-4xl mb-3">🛒</div><p class="text-slate-400">Carrito vacío</p><a href="./productos.html" class="btn-primary text-sm mt-3 inline-flex">Ver productos</a></div>
+    <template x-for="item in cartItems" :key="item.id">
+      <div class="flex gap-3 bg-bg-main rounded-xl p-3 border border-border-card mb-3">
+        <img :src="item.image" :alt="item.name" class="w-14 h-14 rounded-lg object-cover shrink-0" />
+        <div class="flex-1 min-w-0">
+          <p class="font-semibold text-sm" x-text="item.name"></p>
+          <p class="text-orange-500 font-bold text-sm" x-text="price(item.pricePen)"></p>
+        </div>
+        <button @click="removeFromCart(item.id)" class="text-slate-500 hover:text-red-400"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+      </div>
+    </template>
+  </div>
+  <div x-show="cartItems.length > 0" class="p-5 border-t border-border-card">
+    <div class="flex justify-between mb-3"><span class="text-slate-400 text-sm">Subtotal</span><span class="font-bold" x-text="cartSubtotal"></span></div>
+    <button class="btn-primary w-full justify-center">Ir al pago →</button>
+  </div>
+</div>
+
+<!-- ═══ HEADER ════════════════════════════════════════════ -->
+<div class="pt-16">
+  <div class="border-b border-border-card py-12 mesh-pattern">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav class="flex items-center gap-2 text-xs text-slate-500 mb-4">
+        <a href="./index.html" class="hover:text-slate-300">Inicio</a>
+        <span>/</span>
+        <span class="text-slate-300">Contacto</span>
+      </nav>
+      <span class="section-tag mb-4 inline-block">Soporte & Contacto</span>
+      <h1 class="text-4xl font-black text-white mb-3">¿Cómo podemos ayudarte?</h1>
+      <p class="text-slate-400 text-lg max-w-xl">Soporte técnico, cotizaciones empresariales, preguntas sobre envíos o cualquier consulta. Estamos en Lima, Perú.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CONTACTO MAIN ══════════════════════════════════════ -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+
+    <!-- Info de contacto -->
+    <div class="space-y-6">
+      <div>
+        <h2 class="font-black text-xl text-white mb-4">Canales de contacto</h2>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          Somos un equipo pequeño y respondemos rápido. Para soporte urgente, WhatsApp es la vía más rápida.
+        </p>
+      </div>
+
+      <!-- WhatsApp -->
+      <a href="https://wa.me/51999888777" target="_blank" class="flex items-start gap-4 bg-bg-card border border-border-card hover:border-green-500/40 rounded-xl p-4 transition-all group">
+        <div class="w-10 h-10 bg-green-500/15 border border-green-500/30 rounded-lg flex items-center justify-center shrink-0 group-hover:bg-green-500/25 transition-all">
+          <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </div>
+        <div>
+          <p class="font-bold text-white text-sm">WhatsApp</p>
+          <p class="text-green-400 text-sm font-semibold">+51 999 888 777</p>
+          <p class="text-slate-500 text-xs mt-0.5">Lun–Sáb, 9am–7pm (Lima)</p>
+        </div>
+      </a>
+
+      <!-- Email -->
+      <a href="mailto:info@ftdmesh.pe" class="flex items-start gap-4 bg-bg-card border border-border-card hover:border-orange-500/40 rounded-xl p-4 transition-all group">
+        <div class="w-10 h-10 bg-orange-500/15 border border-orange-500/30 rounded-lg flex items-center justify-center shrink-0 group-hover:bg-orange-500/25">
+          <svg class="w-5 h-5 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        </div>
+        <div>
+          <p class="font-bold text-white text-sm">Email</p>
+          <p class="text-orange-400 text-sm font-semibold">info@ftdmesh.pe</p>
+          <p class="text-slate-500 text-xs mt-0.5">Respondemos en 24–48h hábiles</p>
+        </div>
+      </a>
+
+      <!-- Ubicación -->
+      <div class="flex items-start gap-4 bg-bg-card border border-border-card rounded-xl p-4">
+        <div class="w-10 h-10 bg-blue-500/15 border border-blue-500/30 rounded-lg flex items-center justify-center shrink-0">
+          <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+        <div>
+          <p class="font-bold text-white text-sm">Ubicación</p>
+          <p class="text-blue-400 text-sm font-semibold">Lima, Perú</p>
+          <p class="text-slate-500 text-xs mt-0.5">Envíos a todo el país via Shalom, Olva Courier</p>
+        </div>
+      </div>
+
+      <!-- Discord -->
+      <a href="#" target="_blank" class="flex items-start gap-4 bg-bg-card border border-border-card hover:border-purple-500/40 rounded-xl p-4 transition-all group">
+        <div class="w-10 h-10 bg-purple-500/15 border border-purple-500/30 rounded-lg flex items-center justify-center shrink-0 group-hover:bg-purple-500/25">
+          <svg class="w-5 h-5 text-purple-400" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.003.022.015.04.032.053a19.9 19.9 0 0 0 5.993 3.03.077.077 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+        </div>
+        <div>
+          <p class="font-bold text-white text-sm">Discord</p>
+          <p class="text-purple-400 text-sm font-semibold">discord.gg/ftdmesh</p>
+          <p class="text-slate-500 text-xs mt-0.5">Comunidad activa, ayuda en tiempo real</p>
+        </div>
+      </a>
+
+      <!-- Horarios -->
+      <div class="bg-bg-card border border-border-card rounded-xl p-5">
+        <h4 class="font-bold text-white text-sm mb-3">Horarios de atención</h4>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between">
+            <span class="text-slate-400">Lunes – Viernes</span>
+            <span class="text-white font-medium">9:00 – 19:00</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">Sábado</span>
+            <span class="text-white font-medium">9:00 – 14:00</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">Domingo</span>
+            <span class="text-slate-500">Cerrado</span>
+          </div>
+        </div>
+        <div class="mt-3 pt-3 border-t border-border-card">
+          <p class="text-xs text-slate-500">Todos los horarios en hora de Lima (GMT-5)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulario de contacto -->
+    <div class="lg:col-span-2">
+      <div class="bg-bg-card border border-border-card rounded-2xl p-8">
+        <h2 class="font-black text-2xl text-white mb-2">Envíanos un mensaje</h2>
+        <p class="text-slate-400 text-sm mb-8">Completa el formulario y te respondemos en 24 horas hábiles.</p>
+
+        <div x-show="!contactSent">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+            <div>
+              <label class="form-label">Nombre completo *</label>
+              <input type="text" x-model="contactForm.nombre" placeholder="Tu nombre" class="form-input" />
+            </div>
+            <div>
+              <label class="form-label">Email *</label>
+              <input type="email" x-model="contactForm.email" placeholder="tu@email.com" class="form-input" />
+            </div>
+            <div>
+              <label class="form-label">Teléfono / WhatsApp</label>
+              <input type="tel" x-model="contactForm.telefono" placeholder="+51 9XX XXX XXX" class="form-input" />
+            </div>
+            <div>
+              <label class="form-label">Empresa (opcional)</label>
+              <input type="text" x-model="contactForm.empresa" placeholder="Nombre de tu empresa" class="form-input" />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="form-label">Tipo de consulta *</label>
+              <select x-model="contactForm.tipo" class="form-input">
+                <option value="">Selecciona el tipo de consulta</option>
+                <option value="soporte">Soporte técnico</option>
+                <option value="pedido">Consulta sobre pedido / envío</option>
+                <option value="cotizacion">Cotización empresarial</option>
+                <option value="producto">Información de producto</option>
+                <option value="membresia">Membresías</option>
+                <option value="evento">Eventos y talleres</option>
+                <option value="otro">Otro</option>
+              </select>
+            </div>
+            <div class="sm:col-span-2">
+              <label class="form-label">Mensaje *</label>
+              <textarea x-model="contactForm.mensaje" rows="5" placeholder="Cuéntanos tu consulta, proyecto o problema. Mientras más detalles nos des, mejor podemos ayudarte." class="form-input resize-none"></textarea>
+            </div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-4 items-start">
+            <button @click="submitContact()" class="btn-primary px-8 py-3 text-base">
+              Enviar mensaje
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+            </button>
+            <div>
+              <p class="text-xs text-slate-500">Al enviar aceptas nuestra <a href="#" class="text-orange-400 hover:underline">política de privacidad</a>.</p>
+              <p class="text-xs text-slate-500 mt-1">Respondemos en 24h hábiles. Para urgencias, escríbenos por WhatsApp.</p>
+            </div>
+          </div>
+        </div>
+
+        <div x-show="contactSent" class="text-center py-12">
+          <div class="text-6xl mb-4">📬</div>
+          <h3 class="text-2xl font-black text-white mb-2">¡Mensaje recibido!</h3>
+          <p class="text-slate-400 mb-2">Te respondemos en 24 horas hábiles.</p>
+          <p class="text-orange-400 font-semibold" x-text="contactForm.email"></p>
+          <p class="text-slate-500 text-sm mt-4">Mientras tanto, únete a nuestro Discord para ayuda de la comunidad.</p>
+          <div class="flex gap-3 justify-center mt-6">
+            <a href="#" class="btn-outline text-sm">Unirse al Discord</a>
+            <button @click="contactSent = false; contactForm = {nombre:'', email:'', telefono:'', empresa:'', tipo:'', mensaje:''}" class="btn-ghost text-sm">Enviar otro mensaje</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FAQ ACORDEÓN ═══════════════════════════════════════ -->
+<section class="py-16 border-t border-border-card" style="background: #080c14;">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-10">
+      <span class="section-tag">FAQ</span>
+      <h2 class="text-3xl font-black text-white mt-3">Preguntas Frecuentes</h2>
+      <p class="text-slate-400 mt-2">Las dudas más comunes sobre Meshtastic, FTDMESH y nuestro servicio.</p>
+    </div>
+
+    <div class="space-y-0">
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaqItem(this)" aria-expanded="false">
+          ¿Qué es Meshtastic y cómo funciona?
+          <span class="faq-icon">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <p>Meshtastic es un firmware de código abierto que convierte módulos de radio LoRa en nodos de comunicación descentralizados. Los dispositivos forman automáticamente una red "mesh" donde cada nodo retransmite los mensajes de los demás, extendiendo el alcance sin necesidad de internet, celular o infraestructura.</p>
+          <p class="mt-2">Funciona en la banda ISM 915 MHz (legal en Perú), con alcances de 2–20 km dependiendo del terreno, y cifrado AES-256 nativo. Es 100% gratuito, sin suscripciones.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaqItem(this)" aria-expanded="false">
+          ¿Es legal usar LoRa 915 MHz en el Perú?
+          <span class="faq-icon">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <p>Sí. La banda 915 MHz es una banda ISM (Industrial, Scientific and Medical) de uso libre en el Perú, regulada por el MTC (Ministerio de Transportes y Comunicaciones). No requiere licencia de radioaficionado para su uso en aplicaciones personales y comerciales con las potencias permitidas.</p>
+          <p class="mt-2">Los dispositivos que vendemos operan dentro de los límites de potencia establecidos por la regulación peruana (máximo 36 dBm / 4W EIRP). Todos son compatibles con las normas peruanas.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaqItem(this)" aria-expanded="false">
+          ¿Cuánto alcance tiene una red Meshtastic en los Andes?
+          <span class="faq-icon">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <p>En condiciones óptimas (línea de vista, terreno abierto), los dispositivos pueden alcanzar 10–20 km. En terreno andino con valles y montañas, el alcance práctico entre dos nodos es de 2–8 km.</p>
+          <p class="mt-2">La magia de Meshtastic está en la red mesh: si tienes 3 nodos en una ruta de senderismo espaciados 5 km, el mensaje "salta" de nodo en nodo, permitiendo comunicación a 10–15 km totales. Usando antenas de mayor ganancia (5–10 dBi) o nodos repetidores en puntos altos, puedes cubrir valles completos.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaqItem(this)" aria-expanded="false">
+          ¿Cuánto tarda el envío y a qué zonas llegan?
+          <span class="faq-icon">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <p>Enviamos a todo el Perú usando Shalom Express y Olva Courier:</p>
+          <ul class="mt-2 space-y-1 text-slate-400 list-disc list-inside">
+            <li>Lima Metropolitana: 1–2 días hábiles</li>
+            <li>Capitales de provincia: 2–4 días hábiles</li>
+            <li>Distritos remotos: 3–7 días hábiles</li>
+          </ul>
+          <p class="mt-2">Los pedidos se procesan el mismo día si se realizan antes de las 2pm (hora Lima). Envío gratis en pedidos mayores a S/. 500.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaqItem(this)" aria-expanded="false">
+          ¿Qué pasa si mi dispositivo llega dañado o con defecto?
+          <span class="faq-icon">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <p>Todos los dispositivos pasan por control de calidad antes del envío. Si recibes un producto con defecto de fábrica o dañado en el transporte, tienes 15 días calendario para reportarlo.</p>
+          <p class="mt-2">Proceso: (1) Contáctanos por WhatsApp con foto del defecto, (2) Coordinamos la devolución, (3) Enviamos reemplazo sin costo o procesamos reembolso completo.</p>
+          <p class="mt-2">Los daños por mal uso o modificaciones no están cubiertos. Consulta nuestra política completa de devoluciones para más detalles.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="mt-8 text-center">
+      <p class="text-slate-400 text-sm mb-4">¿No encontraste tu respuesta?</p>
+      <div class="flex gap-3 justify-center flex-wrap">
+        <a href="https://wa.me/51999888777" target="_blank" class="btn-primary text-sm">
+          Pregúntanos por WhatsApp
+        </a>
+        <a href="#" class="btn-ghost text-sm">Ver Discord de la comunidad</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ════════════════════════════════════════════ -->
+<footer class="border-t border-border-card pt-16 pb-8" style="background: #06090f;">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
+      <div class="col-span-2 md:col-span-1">
+        <a href="./index.html" class="flex items-center gap-2 mb-3"><span class="font-bold text-lg text-white">FTD<span style="color:#f97316">MESH</span></span></a>
+        <p class="text-slate-400 text-sm mb-4">Dispositivos Meshtastic LoRa para el Perú. Comunicación off-grid para todos.</p>
+        <div class="flex gap-2">
+          <a href="#" class="w-8 h-8 bg-bg-card border border-border-card rounded-lg flex items-center justify-center text-slate-400 hover:text-orange-400 text-xs font-bold">f</a>
+          <a href="#" class="w-8 h-8 bg-bg-card border border-border-card rounded-lg flex items-center justify-center text-slate-400 hover:text-orange-400 text-xs font-bold">ig</a>
+          <a href="#" class="w-8 h-8 bg-bg-card border border-border-card rounded-lg flex items-center justify-center text-slate-400 hover:text-orange-400 text-xs font-bold">yt</a>
+          <a href="#" class="w-8 h-8 bg-bg-card border border-border-card rounded-lg flex items-center justify-center text-slate-400 hover:text-orange-400 text-xs font-bold">gh</a>
+        </div>
+      </div>
+      <div>
+        <p class="text-white font-bold text-sm mb-3">Dispositivos</p>
+        <ul class="space-y-2">
+          <li><a href="./productos.html" class="text-slate-400 hover:text-orange-400 text-sm">Todos</a></li>
+          <li><a href="./productos.html" class="text-slate-400 hover:text-orange-400 text-sm">Entrada</a></li>
+          <li><a href="./productos.html" class="text-slate-400 hover:text-orange-400 text-sm">Pro</a></li>
+          <li><a href="./productos.html" class="text-slate-400 hover:text-orange-400 text-sm">Accesorios</a></li>
+          <li><a href="./productos.html" class="text-slate-400 hover:text-orange-400 text-sm">Bundles</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-white font-bold text-sm mb-3">Empresa</p>
+        <ul class="space-y-2">
+          <li><a href="#" class="text-slate-400 hover:text-orange-400 text-sm">Sobre nosotros</a></li>
+          <li><a href="./eventos.html" class="text-slate-400 hover:text-orange-400 text-sm">Eventos</a></li>
+          <li><a href="./contacto.html" class="text-slate-400 hover:text-orange-400 text-sm">Contacto</a></li>
+          <li><a href="./industrias.html" class="text-slate-400 hover:text-orange-400 text-sm">Industrias</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-white font-bold text-sm mb-3">Soporte</p>
+        <ul class="space-y-2">
+          <li><a href="#" class="text-slate-400 hover:text-orange-400 text-sm">FAQ</a></li>
+          <li><a href="#" class="text-slate-400 hover:text-orange-400 text-sm">Documentación</a></li>
+          <li><a href="#" class="text-slate-400 hover:text-orange-400 text-sm">Discord</a></li>
+          <li><a href="#" class="text-slate-400 hover:text-orange-400 text-sm">Devoluciones</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-border-card pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+      <p>© 2025 FTDMESH. Todos los derechos reservados.</p>
+      <div class="flex gap-2">
+        <span class="payment-icon">VISA</span>
+        <span class="payment-icon">MASTERCARD</span>
+        <span class="payment-icon" style="color:#a78bfa;">YAPE</span>
+        <span class="payment-icon" style="color:#60a5fa;">PLIN</span>
+        <span class="payment-icon" style="color:#f97316;">NIUBIZ</span>
+      </div>
+      <p>Hecho con ❤️ en Perú</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div x-show="toast" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" class="toast success" style="display:none;">
+  <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+  <p class="text-sm font-medium" x-text="toast && toast.message"></p>
+</div>
+
+<script>
+function toggleFaqItem(btn) {
+  const item = btn.closest('.faq-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => {
+    i.classList.remove('open');
+    i.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+  });
+  if (!wasOpen) {
+    item.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+  }
+}
+</script>
+
+</body>
+</html>

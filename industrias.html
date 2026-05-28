@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Soluciones por Industria — FTDMESH | Meshtastic LoRa Perú</title>
+  <meta name="description" content="Soluciones Meshtastic LoRa para Outdoor, Agricultura, Seguridad Urbana, Emergencias y Minería en Perú. Comunicación off-grid por industria." />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'bg-main':  '#080c14',
+            'bg-card':  '#0f1624',
+            'bg-hover': '#1a2340',
+            'border-card': '#1e2d4a',
+          }
+        }
+      }
+    }
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <link rel="stylesheet" href="./assets/css/style.css" />
+  <script src="./assets/js/data.js"></script>
+  <script src="./assets/js/main.js"></script>
+</head>
+
+<body class="bg-bg-main text-slate-100" x-data="ftdmesh()" x-init="init()">
+
+<!-- ═══ NAVBAR ═══════════════════════════════════════════ -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 border-b border-border-card"
+     style="background: rgba(8,12,20,0.95); backdrop-filter: blur(20px);">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <a href="./index.html" class="flex items-center gap-2.5 shrink-0">
+        <div class="w-8 h-8 text-orange-500">
+          <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="3" fill="currentColor"/><path d="M16 16 Q20 10 26 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.9"/><path d="M16 16 Q21 16 27 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.7"/><path d="M16 16 Q12 10 6 8" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.6"/></svg>
+        </div>
+        <span class="font-bold text-xl tracking-tight text-slate-100">FTD<span style="color:#f97316">MESH</span></span>
+      </a>
+      <div class="hidden lg:flex items-center gap-1">
+        <div class="nav-item relative" @mouseenter="openDropdown('productos')" @mouseleave="closeDropdown()">
+          <button class="flex items-center gap-1 px-4 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5">
+            Productos <svg class="w-4 h-4 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="nav-dropdown" x-show="activeDropdown === 'productos'" x-transition:enter="transition ease-out duration-150" x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-1 translate-y-0">
+            <a href="./productos.html">📡 Dispositivos</a>
+            <a href="./productos.html#accesorios">🔧 Accesorios</a>
+            <a href="./productos.html#bundles">📦 Bundles</a>
+            <a href="./index.html#membresias">⭐ Membresías</a>
+          </div>
+        </div>
+        <div class="nav-item relative" @mouseenter="openDropdown('industrias')" @mouseleave="closeDropdown()">
+          <button class="flex items-center gap-1 px-4 py-2 text-sm font-medium text-orange-400 rounded-lg bg-orange-500/10">
+            Industrias <svg class="w-4 h-4 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="nav-dropdown" x-show="activeDropdown === 'industrias'" x-transition:enter="transition ease-out duration-150" x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-1 translate-y-0">
+            <a href="#outdoor">🏔️ Outdoor &amp; Aventura</a>
+            <a href="#agricultura">🌾 Agricultura</a>
+            <a href="#seguridad">🛡️ Seguridad Urbana</a>
+            <a href="#emergencias">🚨 Emergencias</a>
+            <a href="#mineria">⛏️ Minería</a>
+          </div>
+        </div>
+        <a href="./eventos.html" class="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5">Eventos</a>
+        <a href="#" class="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5">Foro</a>
+        <a href="./contacto.html" class="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5">Contacto</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="hidden sm:flex items-center bg-bg-card border border-border-card rounded-lg overflow-hidden text-xs font-bold">
+          <button @click="setCurrency('PEN')" :class="currency === 'PEN' ? 'bg-orange-500 text-white' : 'text-slate-400'" class="px-3 py-1.5 transition-all">PEN</button>
+          <button @click="setCurrency('USD')" :class="currency === 'USD' ? 'bg-orange-500 text-white' : 'text-slate-400'" class="px-3 py-1.5 transition-all">USD</button>
+        </div>
+        <button @click="cartOpen = true" class="relative flex items-center gap-2 bg-bg-card border border-border-card hover:border-orange-500/50 rounded-lg px-3 py-1.5 text-sm font-medium text-slate-300 hover:text-white transition-all">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          <span class="hidden sm:inline">Carrito</span>
+          <span x-show="cartCount > 0" x-text="cartCount" class="absolute -top-1.5 -right-1.5 w-5 h-5 bg-orange-500 text-white text-xs font-bold rounded-full flex items-center justify-center"></span>
+        </button>
+        <button @click="toggleMobileMenu()" class="lg:hidden p-2 rounded-lg border border-border-card text-slate-300">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-menu lg:hidden" :class="mobileMenuOpen ? 'open' : ''">
+    <div class="space-y-1">
+      <a href="./index.html" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 rounded-lg" @click="closeMobileMenu()">🏠 Inicio</a>
+      <a href="./productos.html" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 rounded-lg" @click="closeMobileMenu()">📡 Productos</a>
+      <a href="./industrias.html" class="flex items-center gap-2 px-3 py-2 text-sm text-orange-400 bg-orange-500/10 rounded-lg">🏭 Industrias</a>
+      <a href="./eventos.html" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 rounded-lg" @click="closeMobileMenu()">📅 Eventos</a>
+      <a href="./contacto.html" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 rounded-lg" @click="closeMobileMenu()">✉️ Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Cart sidebar (compact) -->
+<div x-show="cartOpen" class="cart-overlay" @click="cartOpen = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"></div>
+<div x-show="cartOpen" class="cart-sidebar" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full">
+  <div class="flex items-center justify-between p-5 border-b border-border-card shrink-0">
+    <div><h2 class="font-bold text-lg">Carrito</h2><p class="text-xs text-slate-500" x-text="`${cartCount} producto(s)`"></p></div>
+    <button @click="cartOpen = false" class="p-2 rounded-lg hover:bg-white/5 text-slate-400"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+  </div>
+  <div class="flex-1 overflow-y-auto p-5 space-y-3">
+    <div x-show="cartItems.length === 0" class="text-center py-12"><div class="text-4xl mb-3">🛒</div><p class="text-slate-400">Carrito vacío</p></div>
+    <template x-for="item in cartItems" :key="item.id">
+      <div class="flex gap-3 bg-bg-main rounded-xl p-3 border border-border-card">
+        <img :src="item.image" :alt="item.name" class="w-14 h-14 rounded-lg object-cover shrink-0" />
+        <div class="flex-1 min-w-0">
+          <p class="font-semibold text-sm" x-text="item.name"></p>
+          <p class="text-orange-500 font-bold text-sm" x-text="price(item.pricePen)"></p>
+          <div class="flex items-center gap-2 mt-1">
+            <button @click="updateQty(item.id, -1)" class="w-5 h-5 rounded border border-border-card text-xs flex items-center justify-center">−</button>
+            <span class="text-xs font-bold" x-text="item.qty"></span>
+            <button @click="updateQty(item.id, 1)" class="w-5 h-5 rounded border border-border-card text-xs flex items-center justify-center">+</button>
+          </div>
+        </div>
+        <button @click="removeFromCart(item.id)" class="text-slate-500 hover:text-red-400"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+      </div>
+    </template>
+  </div>
+  <div x-show="cartItems.length > 0" class="p-5 border-t border-border-card">
+    <div class="flex justify-between mb-3"><span class="text-slate-400 text-sm">Subtotal</span><span class="font-bold" x-text="cartSubtotal"></span></div>
+    <button class="btn-primary w-full justify-center">Ir al pago →</button>
+  </div>
+</div>
+
+<!-- ═══ HERO INDUSTRIAS ═══════════════════════════════════ -->
+<div class="pt-16">
+  <div class="industry-hero py-16 mesh-pattern">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav class="flex items-center gap-2 text-xs text-slate-500 mb-4">
+        <a href="./index.html" class="hover:text-slate-300">Inicio</a>
+        <span>/</span>
+        <span class="text-slate-300">Industrias</span>
+      </nav>
+      <div class="max-w-3xl">
+        <span class="section-tag mb-4 inline-block">Soluciones empresariales</span>
+        <h1 class="text-4xl sm:text-5xl font-black text-white leading-tight mb-4">
+          Comunicación Mesh para<br /><span style="color:#f97316">Cada Industria</span>
+        </h1>
+        <p class="text-xl text-slate-400 leading-relaxed mb-8">
+          Desde el senderismo en Huaraz hasta la mina en Cerro de Pasco. FTDMESH tiene la solución off-grid para tu sector.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a href="#outdoor" class="btn-ghost text-sm">🏔️ Outdoor</a>
+          <a href="#agricultura" class="btn-ghost text-sm">🌾 Agricultura</a>
+          <a href="#seguridad" class="btn-ghost text-sm">🛡️ Seguridad</a>
+          <a href="#emergencias" class="btn-ghost text-sm">🚨 Emergencias</a>
+          <a href="#mineria" class="btn-ghost text-sm">⛏️ Minería</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ INDUSTRIA: OUTDOOR ═══════════════════════════════ -->
+<section id="outdoor" class="py-20 border-b border-border-card" style="background: #080c14;">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <div class="inline-flex items-center gap-2 text-4xl mb-4">🏔️</div>
+        <span class="section-tag mb-3 block w-fit">Outdoor &amp; Aventura</span>
+        <h2 class="text-3xl font-black text-white mb-4">Comunícate en los Andes sin señal celular</h2>
+        <p class="text-slate-400 leading-relaxed mb-6">
+          Lleva Meshtastic a tu próxima expedición. Red mesh entre tu grupo sin depender de torres celulares ni internet satelital caro. Funciona en los Andes, la Amazonía y el Altiplano.
+        </p>
+        <div class="space-y-3 mb-8">
+          <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wider">Casos de uso:</h4>
+          <ul class="space-y-2">
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-orange-400">→</span> Senderismo en Huaraz y Cordillera Blanca</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-orange-400">→</span> Expediciones al Nevado Ausangate (6,384m)</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-orange-400">→</span> Inca Trail y Camino Inca a Machu Picchu</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-orange-400">→</span> Camping en Reserva Pacaya-Samiria</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-orange-400">→</span> Parapente, ciclismo de montaña, kayak</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-orange-400">→</span> Guías de montaña y agencias de turismo</li>
+          </ul>
+        </div>
+        <div class="bg-bg-card border border-border-card rounded-xl p-4 mb-6">
+          <p class="text-xs text-slate-500 italic mb-1">"En el Ausangate a 5,800m no había señal. Con FTDMESH podíamos comunicarnos en todo el grupo. Nos salvó."</p>
+          <p class="text-xs font-bold text-orange-400">— Carlos Quispe, Guía de montaña certificado, Huaraz</p>
+        </div>
+        <div class="flex gap-3 flex-wrap">
+          <button @click="addToCart({id:201, name:'Bundle Outdoor', pricePen:650, image:'https://placehold.co/600x400/080c14/f97316?text=Bundle+Outdoor&font=mono'})" class="btn-primary">
+            Comprar Bundle Outdoor — <span x-text="price(650)"></span>
+          </button>
+          <a href="./productos.html" class="btn-outline">Ver dispositivos</a>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <img src="https://placehold.co/600x400/080c14/f97316?text=Outdoor+Aventura+Peru&font=mono" alt="Outdoor Aventura" class="rounded-xl border border-border-card w-full" loading="lazy" />
+        <div class="grid grid-cols-3 gap-3">
+          <div class="bg-bg-card border border-border-card rounded-lg p-3 text-center">
+            <p class="text-xl font-black text-orange-500">+20km</p>
+            <p class="text-xs text-slate-500">alcance línea de vista</p>
+          </div>
+          <div class="bg-bg-card border border-border-card rounded-lg p-3 text-center">
+            <p class="text-xl font-black text-green-400">72h</p>
+            <p class="text-xs text-slate-500">autonomía batería</p>
+          </div>
+          <div class="bg-bg-card border border-border-card rounded-lg p-3 text-center">
+            <p class="text-xl font-black text-blue-400">AES-256</p>
+            <p class="text-xs text-slate-500">cifrado nativo</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ INDUSTRIA: AGRICULTURA ════════════════════════════ -->
+<section id="agricultura" class="py-20 border-b border-border-card mesh-pattern-subtle">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div class="order-2 lg:order-1 space-y-4">
+        <img src="https://placehold.co/600x400/080c14/22c55e?text=Agricultura+Ganaderia&font=mono" alt="Agricultura y Ganadería" class="rounded-xl border border-border-card w-full" loading="lazy" />
+        <div class="grid grid-cols-3 gap-3">
+          <div class="bg-bg-card border border-border-card rounded-lg p-3 text-center">
+            <p class="text-xl font-black text-green-400">S/. 0</p>
+            <p class="text-xs text-slate-500">costo mensual datos</p>
+          </div>
+          <div class="bg-bg-card border border-border-card rounded-lg p-3 text-center">
+            <p class="text-xl font-black text-orange-500">8km</p>
+            <p class="text-xs text-slate-500">en terreno abierto</p>
+          </div>
+          <div class="bg-bg-card border border-border-card rounded-lg p-3 text-center">
+            <p class="text-xl font-black text-blue-400">Solar</p>
+            <p class="text-xs text-slate-500">sin mantenimiento</p>
+          </div>
+        </div>
+      </div>
+      <div class="order-1 lg:order-2">
+        <div class="inline-flex items-center gap-2 text-4xl mb-4">🌾</div>
+        <span class="section-tag mb-3 block w-fit">Agricultura &amp; Ganadería</span>
+        <h2 class="text-3xl font-black text-white mb-4">Conectividad para tus tierras sin cobertura</h2>
+        <p class="text-slate-400 leading-relaxed mb-6">
+          Monitorea ganado, activa riegos y comunica a tu personal en haciendas y fundos remotos sin pagar por datos móviles. Un nodo solar una vez instalado funciona años sin mantenimiento.
+        </p>
+        <div class="space-y-3 mb-8">
+          <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wider">Casos de uso:</h4>
+          <ul class="space-y-2">
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-green-400">→</span> Rastreo GPS de ganado en tiempo real</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-green-400">→</span> Comunicación en fundos de Ica y La Libertad</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-green-400">→</span> Monitoreo de sensores de riego por goteo</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-green-400">→</span> Coordinación de cuadrillas agrícolas</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-green-400">→</span> Alertas de perímetro y seguridad del fundo</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-green-400">→</span> Haciendas en Cajamarca, Arequipa, Cusco</li>
+          </ul>
+        </div>
+        <div class="bg-bg-card border border-border-card rounded-xl p-4 mb-6">
+          <p class="text-xs text-slate-500 italic mb-1">"Tenemos 800 hectáreas en Ica. Con la red mesh coordinamos a 12 personas sin pagar plan de datos. El ahorro es enorme."</p>
+          <p class="text-xs font-bold text-green-400">— Ing. María Flores, Gerente Agrícola, Ica</p>
+        </div>
+        <div class="flex gap-3 flex-wrap">
+          <button @click="addToCart({id:202, name:'Bundle Agro', pricePen:1850, image:'https://placehold.co/600x400/080c14/22c55e?text=Bundle+Agro&font=mono'})" class="btn-primary">
+            Comprar Bundle Agro — <span x-text="price(1850)"></span>
+          </button>
+          <a href="./contacto.html" class="btn-outline">Cotizar proyecto</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ INDUSTRIA: SEGURIDAD ══════════════════════════════ -->
+<section id="seguridad" class="py-20 border-b border-border-card" style="background: #080c14;">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <div class="inline-flex items-center gap-2 text-4xl mb-4">🛡️</div>
+        <span class="section-tag mb-3 block w-fit">Seguridad Urbana</span>
+        <h2 class="text-3xl font-black text-white mb-4">Comunicación táctica para serenazgo y seguridad privada</h2>
+        <p class="text-slate-400 leading-relaxed mb-6">
+          Red privada cifrada AES-256 para equipos de seguridad. Sin dependencia de redes celulares que pueden estar saturadas o caídas. Centro de mando visual con T-Deck Plus.
+        </p>
+        <div class="space-y-3 mb-8">
+          <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wider">Casos de uso:</h4>
+          <ul class="space-y-2">
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-blue-400">→</span> Serenazgo municipal Lima y provincias</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-blue-400">→</span> Vigilancia privada en condominios y centros comerciales</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-blue-400">→</span> Patrullaje coordinado por zonas</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-blue-400">→</span> Centro de mando y control ATAK</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-blue-400">→</span> Respuesta coordinada a incidentes</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-blue-400">→</span> Seguridad en eventos masivos y conciertos</li>
+          </ul>
+        </div>
+        <div class="bg-bg-card border border-border-card rounded-xl p-4 mb-6">
+          <p class="text-xs text-slate-500 italic mb-1">"El municipio de Surco tiene 15 nodos desplegados. La coordinación mejoró 60% y ya no dependemos del celular en emergencias."</p>
+          <p class="text-xs font-bold text-blue-400">— Cte. Roberto Medina, Jefe de Serenazgo, Santiago de Surco</p>
+        </div>
+        <div class="flex gap-3 flex-wrap">
+          <button @click="addToCart({id:203, name:'Bundle Seguridad', pricePen:2400, image:'https://placehold.co/600x400/080c14/60a5fa?text=Bundle+Seguridad&font=mono'})" class="btn-primary">
+            Comprar Bundle Seguridad — <span x-text="price(2400)"></span>
+          </button>
+          <a href="./contacto.html" class="btn-outline">Cotizar para tu municipio</a>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <img src="https://placehold.co/600x400/080c14/60a5fa?text=Seguridad+Urbana+ATAK&font=mono" alt="Seguridad Urbana" class="rounded-xl border border-border-card w-full" loading="lazy" />
+        <div class="grid grid-cols-3 gap-3">
+          <div class="bg-bg-card border border-border-card rounded-lg p-3 text-center">
+            <p class="text-xl font-black text-blue-400">AES-256</p>
+            <p class="text-xs text-slate-500">cifrado total</p>
+          </div>
+          <div class="bg-bg-card border border-border-card rounded-lg p-3 text-center">
+            <p class="text-xl font-black text-orange-500">ATAK</p>
+            <p class="text-xs text-slate-500">integración nativa</p>
+          </div>
+          <div class="bg-bg-card border border-border-card rounded-lg p-3 text-center">
+            <p class="text-xl font-black text-green-400">Red propia</p>
+            <p class="text-xs text-slate-500">sin terceros</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ INDUSTRIA: EMERGENCIAS ════════════════════════════ -->
+<section id="emergencias" class="py-20 border-b border-border-card mesh-pattern-subtle">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div class="order-2 lg:order-1 space-y-4">
+        <img src="https://placehold.co/600x400/080c14/f97316?text=Emergencias+Defensa+Civil&font=mono" alt="Emergencias" class="rounded-xl border border-border-card w-full" loading="lazy" />
+        <div class="grid grid-cols-3 gap-3">
+          <div class="bg-bg-card border border-border-card rounded-lg p-3 text-center">
+            <p class="text-xl font-black text-orange-500">20 min</p>
+            <p class="text-xs text-slate-500">despliegue completo</p>
+          </div>
+          <div class="bg-bg-card border border-border-card rounded-lg p-3 text-center">
+            <p class="text-xl font-black text-green-400">0</p>
+            <p class="text-xs text-slate-500">dependencia de red celular</p>
+          </div>
+          <div class="bg-bg-card border border-border-card rounded-lg p-3 text-center">
+            <p class="text-xl font-black text-blue-400">Solar</p>
+            <p class="text-xs text-slate-500">sin electricidad</p>
+          </div>
+        </div>
+      </div>
+      <div class="order-1 lg:order-2">
+        <div class="inline-flex items-center gap-2 text-4xl mb-4">🚨</div>
+        <span class="section-tag mb-3 block w-fit">Emergencias &amp; Defensa Civil</span>
+        <h2 class="text-3xl font-black text-white mb-4">Comunicación cuando la red colapsa</h2>
+        <p class="text-slate-400 leading-relaxed mb-6">
+          En desastres naturales, la red celular colapsa primero. FTDMESH proporciona comunicación independiente para equipos de respuesta. Desplegable en 20 minutos, funciona sin electricidad.
+        </p>
+        <div class="space-y-3 mb-8">
+          <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wider">Casos de uso:</h4>
+          <ul class="space-y-2">
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-orange-400">→</span> Bomberos voluntarios y compañías profesionales</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-orange-400">→</span> Defensa Civil en sismos e inundaciones</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-orange-400">→</span> PNP en operaciones de campo y rescate</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-orange-400">→</span> Cruz Roja y organizaciones humanitarias</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-orange-400">→</span> Rescate en montaña y zonas remotas</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-orange-400">→</span> Hospital de campaña y triaje</li>
+          </ul>
+        </div>
+        <div class="bg-bg-card border border-orange-500/30 rounded-xl p-4 mb-6">
+          <p class="text-xs text-slate-500 italic mb-1">"En el sismo de Amazonas desplegamos 8 nodos en 20 minutos. Coordinamos el rescate sin señal. Funciona cuando todo falla."</p>
+          <p class="text-xs font-bold text-orange-400">— Cap. Ana Salas, Bomberos Voluntarios, Lima</p>
+        </div>
+        <div class="flex gap-3 flex-wrap">
+          <button @click="addToCart({id:204, name:'Bundle Emergencias', pricePen:3100, image:'https://placehold.co/600x400/080c14/f97316?text=Bundle+Emergencias&font=mono'})" class="btn-primary">
+            Comprar Bundle Emergencias — <span x-text="price(3100)"></span>
+          </button>
+          <a href="./contacto.html" class="btn-outline">Cotizar para institución</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ INDUSTRIA: MINERÍA ════════════════════════════════ -->
+<section id="mineria" class="py-20 border-b border-border-card" style="background: #080c14;">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <div class="inline-flex items-center gap-2 text-4xl mb-4">⛏️</div>
+        <span class="section-tag mb-3 block w-fit">Minería &amp; Industria</span>
+        <h2 class="text-3xl font-black text-white mb-4">Redes mesh en entornos industriales adversos</h2>
+        <p class="text-slate-400 leading-relaxed mb-6">
+          Comunicación en minas, plantas industriales y zonas de alta interferencia RF. Dispositivos IP67, rango extendido de temperatura, certificados para ambientes explosivos.
+        </p>
+        <div class="space-y-3 mb-8">
+          <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wider">Casos de uso:</h4>
+          <ul class="space-y-2">
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-blue-400">→</span> Minas en Cerro de Pasco, Arequipa y Ancash</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-blue-400">→</span> Plantas procesadoras y fundidoras</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-blue-400">→</span> Comunicación en galerías subterráneas</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-blue-400">→</span> Rastreo de personal en zonas de riesgo</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-blue-400">→</span> Monitoreo de maquinaria y equipos remotos</li>
+            <li class="flex items-center gap-2 text-slate-400 text-sm"><span class="text-blue-400">→</span> Coordinación de turno y cambio de guardia</li>
+          </ul>
+        </div>
+        <div class="bg-bg-card border border-border-card rounded-xl p-4 mb-6">
+          <p class="text-xs text-slate-500 italic mb-1">"En la mina a 4,200m, los radios industriales costaban una fortuna. Con FTDMESH cubrimos el tajo por S/. 2,400."</p>
+          <p class="text-xs font-bold text-blue-400">— Ing. Luis Torres, Jefe de Operaciones, Minera Cusco SAC</p>
+        </div>
+        <div class="flex gap-3 flex-wrap">
+          <a href="./productos.html" class="btn-primary">Ver dispositivos industriales</a>
+          <a href="./contacto.html" class="btn-outline">Solicitar cotización</a>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <img src="https://placehold.co/600x400/080c14/60a5fa?text=Mineria+Industrial+IP67&font=mono" alt="Minería Industrial" class="rounded-xl border border-border-card w-full" loading="lazy" />
+        <div class="grid grid-cols-3 gap-3">
+          <div class="bg-bg-card border border-border-card rounded-lg p-3 text-center">
+            <p class="text-xl font-black text-blue-400">IP67</p>
+            <p class="text-xs text-slate-500">protección industrial</p>
+          </div>
+          <div class="bg-bg-card border border-border-card rounded-lg p-3 text-center">
+            <p class="text-xl font-black text-orange-500">-40°C</p>
+            <p class="text-xs text-slate-500">temperatura operación</p>
+          </div>
+          <div class="bg-bg-card border border-border-card rounded-lg p-3 text-center">
+            <p class="text-xl font-black text-green-400">M12</p>
+            <p class="text-xs text-slate-500">conectores industriales</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FORMULARIO COTIZACIÓN EMPRESAS ═══════════════════ -->
+<section class="py-20" style="background: linear-gradient(135deg, rgba(249,115,22,0.03) 0%, #080c14 100%);">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-10">
+      <span class="section-tag">Proyectos empresariales</span>
+      <h2 class="text-3xl font-black text-white mt-3">¿Proyecto de gran escala?</h2>
+      <p class="text-slate-400 mt-3">Cuéntanos tu caso. Diseñamos la solución y te damos un precio especial por volumen.</p>
+    </div>
+
+    <div class="bg-bg-card border border-border-card rounded-2xl p-8">
+      <div x-show="!quoteSent">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label class="form-label">Empresa *</label>
+            <input type="text" x-model="quoteForm.empresa" placeholder="Nombre de tu empresa" class="form-input" />
+          </div>
+          <div>
+            <label class="form-label">Nombre de contacto *</label>
+            <input type="text" x-model="quoteForm.contacto" placeholder="Tu nombre completo" class="form-input" />
+          </div>
+          <div>
+            <label class="form-label">Email corporativo *</label>
+            <input type="email" x-model="quoteForm.email" placeholder="empresa@correo.pe" class="form-input" />
+          </div>
+          <div>
+            <label class="form-label">Teléfono / WhatsApp</label>
+            <input type="tel" x-model="quoteForm.telefono" placeholder="+51 9XX XXX XXX" class="form-input" />
+          </div>
+          <div>
+            <label class="form-label">Industria</label>
+            <select x-model="quoteForm.industria" class="form-input">
+              <option value="">Selecciona tu industria</option>
+              <option>Outdoor &amp; Aventura</option>
+              <option>Agricultura &amp; Ganadería</option>
+              <option>Seguridad Urbana</option>
+              <option>Emergencias &amp; Defensa Civil</option>
+              <option>Minería &amp; Industria</option>
+              <option>Otra</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Cantidad estimada de nodos</label>
+            <input type="number" x-model="quoteForm.cantidad" placeholder="ej. 20 nodos" class="form-input" min="1" />
+          </div>
+          <div class="sm:col-span-2">
+            <label class="form-label">Descripción del proyecto *</label>
+            <textarea x-model="quoteForm.mensaje" rows="4" placeholder="Cuéntanos tu caso de uso, zona geográfica, cobertura requerida y cualquier detalle relevante..." class="form-input resize-none"></textarea>
+          </div>
+        </div>
+        <button @click="submitQuote()" class="btn-primary w-full justify-center mt-6 py-3 text-base">
+          Enviar solicitud de cotización
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </button>
+        <p class="text-xs text-slate-500 text-center mt-3">Te respondemos en 24 horas hábiles con propuesta técnica y precio.</p>
+      </div>
+      <div x-show="quoteSent" class="text-center py-8">
+        <div class="text-5xl mb-4">✅</div>
+        <h3 class="text-xl font-black text-white mb-2">¡Solicitud recibida!</h3>
+        <p class="text-slate-400">Te enviamos una propuesta técnica y precio en las próximas 24 horas hábiles.</p>
+        <p class="text-orange-400 font-semibold mt-2" x-text="quoteForm.email"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ════════════════════════════════════════════ -->
+<footer class="border-t border-border-card pt-16 pb-8" style="background: #06090f;">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
+      <div class="col-span-2 md:col-span-1">
+        <a href="./index.html" class="flex items-center gap-2 mb-3">
+          <span class="font-bold text-lg text-white">FTD<span style="color:#f97316">MESH</span></span>
+        </a>
+        <p class="text-slate-400 text-sm mb-4">Dispositivos Meshtastic LoRa para el Perú. Comunicación off-grid para todos.</p>
+        <div class="flex gap-2">
+          <a href="#" class="w-8 h-8 bg-bg-card border border-border-card rounded-lg flex items-center justify-center text-slate-400 hover:text-orange-400 text-xs font-bold">f</a>
+          <a href="#" class="w-8 h-8 bg-bg-card border border-border-card rounded-lg flex items-center justify-center text-slate-400 hover:text-orange-400 text-xs font-bold">ig</a>
+          <a href="#" class="w-8 h-8 bg-bg-card border border-border-card rounded-lg flex items-center justify-center text-slate-400 hover:text-orange-400 text-xs font-bold">yt</a>
+        </div>
+      </div>
+      <div>
+        <p class="text-white font-bold text-sm mb-3">Industrias</p>
+        <ul class="space-y-2">
+          <li><a href="#outdoor" class="text-slate-400 hover:text-orange-400 text-sm">Outdoor &amp; Aventura</a></li>
+          <li><a href="#agricultura" class="text-slate-400 hover:text-orange-400 text-sm">Agricultura</a></li>
+          <li><a href="#seguridad" class="text-slate-400 hover:text-orange-400 text-sm">Seguridad</a></li>
+          <li><a href="#emergencias" class="text-slate-400 hover:text-orange-400 text-sm">Emergencias</a></li>
+          <li><a href="#mineria" class="text-slate-400 hover:text-orange-400 text-sm">Minería</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-white font-bold text-sm mb-3">Productos</p>
+        <ul class="space-y-2">
+          <li><a href="./productos.html" class="text-slate-400 hover:text-orange-400 text-sm">Dispositivos</a></li>
+          <li><a href="./productos.html#accesorios" class="text-slate-400 hover:text-orange-400 text-sm">Accesorios</a></li>
+          <li><a href="./productos.html#bundles" class="text-slate-400 hover:text-orange-400 text-sm">Bundles</a></li>
+          <li><a href="./index.html#membresias" class="text-slate-400 hover:text-orange-400 text-sm">Membresías</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-white font-bold text-sm mb-3">Soporte</p>
+        <ul class="space-y-2">
+          <li><a href="#" class="text-slate-400 hover:text-orange-400 text-sm">FAQ</a></li>
+          <li><a href="#" class="text-slate-400 hover:text-orange-400 text-sm">Documentación</a></li>
+          <li><a href="./contacto.html" class="text-slate-400 hover:text-orange-400 text-sm">Contacto</a></li>
+          <li><a href="#" class="text-slate-400 hover:text-orange-400 text-sm">Discord</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-border-card pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+      <p>© 2025 FTDMESH. Todos los derechos reservados.</p>
+      <div class="flex gap-2">
+        <span class="payment-icon">VISA</span><span class="payment-icon">MC</span>
+        <span class="payment-icon" style="color:#a78bfa;">YAPE</span>
+        <span class="payment-icon" style="color:#60a5fa;">PLIN</span>
+        <span class="payment-icon" style="color:#f97316;">NIUBIZ</span>
+      </div>
+      <p>Hecho con ❤️ en Perú</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div x-show="toast" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-4"
+     class="toast success" style="display:none;">
+  <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+  <p class="text-sm font-medium" x-text="toast && toast.message"></p>
+</div>
+
+</body>
+</html>

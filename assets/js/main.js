@@ -69,6 +69,7 @@ function ftdmesh() {
     /* Productos (se cargan desde data.js) */
     allProducts: (typeof FTDMeshData !== 'undefined') ? FTDMeshData.products : [],
     allAccessories: (typeof FTDMeshData !== 'undefined') ? FTDMeshData.accessories : [],
+    allEnclosures: (typeof FTDMeshData !== 'undefined') ? FTDMeshData.enclosures : [],
 
     /* ── Init ──────────────────────────────────────────── */
     init() {
@@ -192,6 +193,29 @@ function ftdmesh() {
         list = list.filter(a =>
           a.name.toLowerCase().includes(q) ||
           a.description.toLowerCase().includes(q)
+        );
+      }
+
+      switch (this.sortBy) {
+        case 'price-asc':  list = [...list].sort((a, b) => a.pricePen - b.pricePen); break;
+        case 'price-desc': list = [...list].sort((a, b) => b.pricePen - a.pricePen); break;
+        case 'name':       list = [...list].sort((a, b) => a.name.localeCompare(b.name)); break;
+        default: break;
+      }
+
+      return list;
+    },
+
+    get filteredEnclosures() {
+      let list = this.allEnclosures;
+
+      if (this.searchQuery.trim()) {
+        const q = this.searchQuery.toLowerCase();
+        list = list.filter(e =>
+          e.name.toLowerCase().includes(q) ||
+          e.description.toLowerCase().includes(q) ||
+          e.compatible.some(c => c.toLowerCase().includes(q)) ||
+          e.badges.some(b => b.toLowerCase().includes(q))
         );
       }
 

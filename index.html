@@ -88,8 +88,12 @@
               <svg class="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
               Bundles
             </a>
+            <a href="./index.html#carcasas">
+              <svg class="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+              Carcasas 3D
+            </a>
             <a href="./index.html#membresias">
-              <svg class="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+              <svg class="w-4 h-4 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
               Membresías
             </a>
           </div>
@@ -156,6 +160,7 @@
       <a href="./productos.html" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 hover:bg-white/5 rounded-lg" @click="closeMobileMenu()">📡 Dispositivos</a>
       <a href="./productos.html#accesorios" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 hover:bg-white/5 rounded-lg" @click="closeMobileMenu()">🔧 Accesorios</a>
       <a href="./productos.html#bundles" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 hover:bg-white/5 rounded-lg" @click="closeMobileMenu()">📦 Bundles</a>
+      <a href="#carcasas" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 hover:bg-white/5 rounded-lg" @click="closeMobileMenu()">🖨️ Carcasas 3D</a>
       <a href="#membresias" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 hover:bg-white/5 rounded-lg" @click="closeMobileMenu()">⭐ Membresías</a>
       <div class="border-t border-border-card my-2"></div>
       <a href="./industrias.html" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 hover:bg-white/5 rounded-lg" @click="closeMobileMenu()">🏭 Industrias</a>
@@ -884,6 +889,52 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════════
+     CARCASAS 3D — Preview 4 destacadas
+═══════════════════════════════════════════════════════ -->
+<section id="carcasas" class="py-20 border-b border-border-card" style="background: #0a0e18;">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold mb-3 border border-purple-500/30" style="background: rgba(139,92,246,0.15); color: #c4b5fd;">
+          🖨️ IMPRESIÓN 3D
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-black text-white">Carcasas 3D <span style="color:#a855f7">Meshtastic</span></h2>
+        <p class="text-slate-400 mt-2 max-w-xl">Cases impresos a pedido en Lima. PLA, PETG y ASA. Colores personalizados. Diseños validados por la comunidad.</p>
+      </div>
+      <a href="./productos.html#carcasas" @click="activeTab='enclosures'" class="hidden sm:flex items-center gap-1 font-semibold text-sm transition-colors" style="color: #a855f7;">
+        Ver los 12 modelos <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <template x-for="enc in allEnclosures.filter(e => e.featured).slice(0,4)" :key="enc.id">
+        <div class="product-card group relative flex flex-col cursor-pointer" @click="window.location.href='./productos.html'">
+          <div class="relative overflow-hidden rounded-xl mb-3 bg-bg-main aspect-square">
+            <img :src="enc.image" :alt="enc.name"
+                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'" />
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-900/30 to-bg-main/80 items-center justify-center text-4xl" style="display:none;">🖨️</div>
+            <div class="absolute top-2 right-2">
+              <span class="badge text-xs" style="background: rgba(139,92,246,0.3); color: #c4b5fd; border: 1px solid rgba(139,92,246,0.4);" x-text="enc.material.split('/')[0].trim()"></span>
+            </div>
+          </div>
+          <h3 class="font-bold text-white text-sm mb-1 group-hover:text-purple-300 transition-colors line-clamp-2" x-text="enc.name"></h3>
+          <p class="font-black text-white text-base mt-auto" x-text="price(enc.pricePen)"></p>
+        </div>
+      </template>
+    </div>
+
+    <div class="text-center mt-8">
+      <a href="./productos.html" @click="activeTab='enclosures'"
+         class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm border transition-all hover:scale-105"
+         style="border-color: rgba(168,85,247,0.4); color: #c4b5fd; background: rgba(139,92,246,0.1);">
+        🖨️ Ver todos los modelos de carcasas 3D
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
      MEMBRESÍAS — 3 tiers
 ═══════════════════════════════════════════════════════ -->
 <section id="membresias" class="py-20 border-b border-border-card" style="background: #080c14;">
@@ -1127,6 +1178,7 @@
           <li><a href="./productos.html" class="text-slate-400 hover:text-orange-400 text-sm transition-colors">Industrial</a></li>
           <li><a href="./productos.html#accesorios" class="text-slate-400 hover:text-orange-400 text-sm transition-colors">Accesorios</a></li>
           <li><a href="./productos.html#bundles" class="text-slate-400 hover:text-orange-400 text-sm transition-colors">Bundles</a></li>
+          <li><a href="./index.html#carcasas" class="text-slate-400 hover:text-orange-400 text-sm transition-colors">Carcasas 3D</a></li>
         </ul>
       </div>
 
@@ -1193,6 +1245,18 @@
   <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
   <p class="text-sm font-medium" x-text="toast && toast.message"></p>
 </div>
+
+<!-- ═══ FLOATING WHATSAPP BUTTON ══════════════════════════ -->
+<a href="https://wa.me/51957085531?text=%C2%A1Hola!%20Visité%20FTDMESH%20y%20quiero%20más%20información%20sobre%20los%20dispositivos%20Meshtastic%20🛒"
+   target="_blank" rel="noopener"
+   class="fixed bottom-6 right-6 z-50 group flex items-center gap-3 rounded-full shadow-2xl transition-all duration-300 hover:pr-5 active:scale-95"
+   style="background: linear-gradient(135deg, #25d366, #128c7e); padding: 14px; box-shadow: 0 4px 25px rgba(37,211,102,0.45);">
+  <svg class="w-7 h-7 text-white shrink-0" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.128.557 4.127 1.528 5.857L.057 23.882a.5.5 0 00.611.611l6.107-1.498A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.894 0-3.668-.523-5.188-1.432l-.364-.216-3.77.924.951-3.68-.237-.381A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+  </svg>
+  <span class="text-white font-bold text-sm whitespace-nowrap max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300">Escríbenos</span>
+</a>
 
 </body>
 </html>

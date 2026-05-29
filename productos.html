@@ -50,6 +50,7 @@
             <a href="./productos.html#dispositivos">📡 Dispositivos</a>
             <a href="./productos.html#accesorios">🔧 Accesorios</a>
             <a href="./productos.html#bundles">📦 Bundles</a>
+            <a href="./productos.html#carcasas">🖨️ Carcasas 3D</a>
             <a href="./index.html#membresias">⭐ Membresías</a>
           </div>
         </div>
@@ -160,7 +161,7 @@
             <span class="text-slate-300">Productos</span>
           </nav>
           <h1 class="text-2xl sm:text-3xl font-black text-white">Catálogo Completo</h1>
-          <p class="text-slate-400 text-sm mt-1">12 dispositivos · 8 accesorios · 4 bundles · Envíos a todo el Perú</p>
+          <p class="text-slate-400 text-sm mt-1">12 dispositivos · 8 accesorios · 4 bundles · 12 carcasas 3D · Envíos a todo el Perú</p>
         </div>
         <!-- Search -->
         <div class="relative w-full sm:w-72">
@@ -179,6 +180,9 @@
         </button>
         <button class="tab-btn" :class="activeTab === 'bundles' ? 'active' : ''" @click="activeTab = 'bundles'">
           📦 Bundles (4)
+        </button>
+        <button class="tab-btn" :class="activeTab === 'enclosures' ? 'active' : ''" @click="activeTab = 'enclosures'">
+          🖨️ Carcasas 3D (<span x-text="filteredEnclosures.length"></span>)
         </button>
       </div>
     </div>
@@ -606,6 +610,130 @@
         </div>
       </div>
 
+      <!-- ══ TAB: CARCASAS 3D ══════════════════════════════ -->
+      <div x-show="activeTab === 'enclosures'" id="carcasas">
+
+        <!-- Header carcasas -->
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h2 class="text-xl font-black text-white flex items-center gap-2">
+              🖨️ Carcasas 3D para Meshtastic
+            </h2>
+            <p class="text-slate-400 text-sm mt-1">Cases impresos en 3D compatibles con los principales dispositivos. Disponibles en PLA, PETG y ASA.</p>
+          </div>
+          <div class="hidden sm:flex items-center gap-2">
+            <label class="text-xs text-slate-500">Ordenar:</label>
+            <select x-model="sortBy" class="form-input py-1.5 text-xs">
+              <option value="default">Destacados</option>
+              <option value="price-asc">Precio ↑</option>
+              <option value="price-desc">Precio ↓</option>
+              <option value="name">Nombre A-Z</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Info banner impresión 3D -->
+        <div class="rounded-2xl border border-purple-500/30 mb-8 p-4 flex items-start gap-4" style="background: rgba(139,92,246,0.08);">
+          <div class="text-2xl shrink-0">💜</div>
+          <div>
+            <p class="font-semibold text-purple-300 text-sm mb-1">Carcasas impresas a pedido en Lima</p>
+            <p class="text-xs text-slate-400">Todos los cases se imprimen en nuestro taller una vez confirmado el pedido. Tiempo de producción 2-5 días hábiles. Puedes pedir colores personalizados. ¿Diseño propio? Escríbenos.</p>
+          </div>
+        </div>
+
+        <!-- Grid carcasas -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+          <template x-for="enc in filteredEnclosures" :key="enc.id">
+            <div class="product-card group relative flex flex-col">
+              <!-- Image -->
+              <div class="relative overflow-hidden rounded-xl mb-4 bg-bg-main aspect-[4/3]">
+                <img :src="enc.image" :alt="enc.name"
+                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'" />
+                <div class="absolute inset-0 bg-gradient-to-br from-purple-900/30 to-bg-main/80 items-center justify-center text-5xl" style="display:none;">🖨️</div>
+                <!-- Featured badge -->
+                <div x-show="enc.featured" class="absolute top-3 left-3">
+                  <span class="badge badge-orange text-xs">⭐ Destacado</span>
+                </div>
+                <!-- Material badge -->
+                <div class="absolute top-3 right-3">
+                  <span class="badge" style="background: rgba(139,92,246,0.3); color: #c4b5fd; border: 1px solid rgba(139,92,246,0.4);" x-text="enc.material.split('/')[0].trim()"></span>
+                </div>
+              </div>
+
+              <!-- Info -->
+              <div class="flex flex-col flex-1 px-1">
+                <!-- Badges -->
+                <div class="flex flex-wrap gap-1 mb-2">
+                  <template x-for="b in enc.badges" :key="b">
+                    <span class="badge badge-slate text-xs" x-text="b"></span>
+                  </template>
+                </div>
+
+                <h3 class="font-bold text-white text-base mb-1 group-hover:text-purple-300 transition-colors" x-text="enc.name"></h3>
+                <p class="text-xs text-slate-400 line-clamp-2 mb-3 flex-1" x-text="enc.description"></p>
+
+                <!-- Compatible with -->
+                <div class="mb-3">
+                  <p class="text-xs text-slate-500 mb-1">Compatible con:</p>
+                  <div class="flex flex-wrap gap-1">
+                    <template x-for="c in enc.compatible" :key="c">
+                      <span class="text-xs px-2 py-0.5 rounded-full border border-border-card text-slate-400" x-text="c"></span>
+                    </template>
+                  </div>
+                </div>
+
+                <!-- Specs row -->
+                <div class="flex items-center gap-3 mb-3 text-xs text-slate-500">
+                  <span>⏱ <span x-text="enc.printTime"></span></span>
+                  <span>·</span>
+                  <span>🎨 <span x-text="enc.color"></span></span>
+                </div>
+
+                <!-- Price + CTA -->
+                <div class="flex items-center justify-between mt-auto pt-3 border-t border-border-card">
+                  <div>
+                    <p class="font-black text-xl text-white" x-text="price(enc.pricePen)"></p>
+                    <p class="text-xs text-slate-500">+ envío</p>
+                  </div>
+                  <div class="flex gap-2">
+                    <button @click="addToCart({id: enc.id, name: enc.name, pricePen: enc.pricePen, image: enc.image})"
+                            class="btn-primary text-sm px-3 py-2">
+                      + Carrito
+                    </button>
+                    <button @click="quickWhatsApp(enc)"
+                            class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90 active:scale-95"
+                            style="background: linear-gradient(135deg, #25d366, #128c7e);">
+                      <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.128.557 4.127 1.528 5.857L.057 23.882a.5.5 0 00.611.611l6.107-1.498A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.894 0-3.668-.523-5.188-1.432l-.364-.216-3.77.924.951-3.68-.237-.381A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+
+          <!-- Empty state -->
+          <div x-show="filteredEnclosures.length === 0" class="col-span-full text-center py-16 text-slate-500">
+            <p class="text-4xl mb-3">🔍</p>
+            <p class="font-semibold">No se encontraron carcasas con ese criterio</p>
+          </div>
+        </div>
+
+        <!-- CTA diseño personalizado -->
+        <div class="mt-10 rounded-2xl border border-border-card p-8 text-center" style="background: #0f1624;">
+          <p class="text-2xl mb-3">🎨</p>
+          <h3 class="font-black text-xl text-white mb-2">¿Quieres un diseño personalizado?</h3>
+          <p class="text-slate-400 text-sm max-w-lg mx-auto mb-5">Te imprimimos el case con tus medidas, logotipo y color. También aceptamos archivos STL propios. Consulta disponibilidad y precios.</p>
+          <button @click="quickWhatsApp({name:'Carcasa 3D personalizada', pricePen:0})"
+                  class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white transition-all hover:opacity-90 active:scale-95"
+                  style="background: linear-gradient(135deg, #25d366, #128c7e);">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.128.557 4.127 1.528 5.857L.057 23.882a.5.5 0 00.611.611l6.107-1.498A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.894 0-3.668-.523-5.188-1.432l-.364-.216-3.77.924.951-3.68-.237-.381A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            Consultar por WhatsApp
+          </button>
+        </div>
+
+      </div><!-- /enclosures tab -->
+
     </div><!-- /flex content -->
   </div><!-- /flex container -->
 </div><!-- /max-w -->
@@ -673,6 +801,18 @@
   <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
   <p class="text-sm font-medium" x-text="toast && toast.message"></p>
 </div>
+
+<!-- ═══ FLOATING WHATSAPP BUTTON ══════════════════════════ -->
+<a href="https://wa.me/51957085531?text=%C2%A1Hola!%20Visité%20FTDMESH%20y%20quiero%20más%20información%20sobre%20los%20dispositivos%20Meshtastic%20🛒"
+   target="_blank" rel="noopener"
+   class="fixed bottom-6 right-6 z-50 group flex items-center gap-3 rounded-full shadow-2xl transition-all duration-300 hover:pr-5 active:scale-95"
+   style="background: linear-gradient(135deg, #25d366, #128c7e); padding: 14px; box-shadow: 0 4px 25px rgba(37,211,102,0.45);">
+  <svg class="w-7 h-7 text-white shrink-0" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.128.557 4.127 1.528 5.857L.057 23.882a.5.5 0 00.611.611l6.107-1.498A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.894 0-3.668-.523-5.188-1.432l-.364-.216-3.77.924.951-3.68-.237-.381A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+  </svg>
+  <span class="text-white font-bold text-sm whitespace-nowrap max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300">Escríbenos</span>
+</a>
 
 </body>
 </html>

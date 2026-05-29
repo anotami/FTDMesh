@@ -7,6 +7,7 @@
 const EXCHANGE_RATE = 3.72;
 const CART_KEY = 'ftdmesh_cart';
 const CURRENCY_KEY = 'ftdmesh_currency';
+const WA_NUMBER = '51957085531';
 
 /* ── Formatear precio ───────────────────────────────────── */
 function formatPrice(pen, currency, rate) {
@@ -231,6 +232,70 @@ function ftdmesh() {
              this.filters.series.length +
              this.filters.capabilities.length +
              (this.filters.maxPrice < 2100 ? 1 : 0);
+    },
+
+    /* ── WhatsApp ──────────────────────────────────────── */
+    openWhatsApp() {
+      if (this.cartItems.length === 0) {
+        this.showToast('Tu carrito está vacío', 'error');
+        return;
+      }
+
+      const cur = this.currency;
+      const rate = this.rate;
+
+      const lineas = this.cartItems.map(item => {
+        const precio = cur === 'USD'
+          ? `$${(item.pricePen / rate * item.qty).toFixed(2)}`
+          : `S/. ${(item.pricePen * item.qty).toLocaleString('es-PE')}`;
+        return `• ${item.qty}× ${item.name} ➜ ${precio}`;
+      });
+
+      const totalPen = this.cartItems.reduce((s, i) => s + i.pricePen * i.qty, 0);
+      const totalStr = cur === 'USD'
+        ? `$${(totalPen / rate).toFixed(2)} USD`
+        : `S/. ${totalPen.toLocaleString('es-PE')} PEN`;
+
+      const msg = [
+        '¡Hola! Me gustaría hacer un pedido en *FTDMESH* 🛒',
+        '',
+        '*Mi pedido:*',
+        ...lineas,
+        '',
+        `*TOTAL: ${totalStr}*`,
+        '',
+        'Por favor indícame:',
+        '📍 Distrito y ciudad de envío',
+        '💳 Método de pago preferido (Yape / Plin / Transferencia / Tarjeta)',
+        '🪪 DNI o RUC para el comprobante (opcional)',
+        '',
+        '¡Gracias! 🙏'
+      ].join('\n');
+
+      const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank');
+      this.cartOpen = false;
+    },
+
+    quickWhatsApp(product) {
+      const cur = this.currency;
+      const precio = cur === 'USD'
+        ? `$${(product.pricePen / this.rate).toFixed(2)} USD`
+        : `S/. ${product.pricePen.toLocaleString('es-PE')} PEN`;
+
+      const msg = [
+        `¡Hola! Me interesa el *${product.name}* de FTDMESH 📡`,
+        '',
+        `Precio: *${precio}*`,
+        '',
+        '¿Tienen disponibilidad?',
+        '¿Cuál es el costo de envío a mi zona?',
+        '',
+        '¡Gracias! 🙏'
+      ].join('\n');
+
+      const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank');
     },
 
     /* ── Toast ─────────────────────────────────────────── */

@@ -115,7 +115,7 @@
         </div>
 
         <a href="./eventos.html" class="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition-all">Eventos</a>
-        <a href="#" class="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition-all">Foro</a>
+        <a href="./index.html#comunidad" class="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition-all">Comunidad</a>
         <a href="./contacto.html" class="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition-all">Contacto</a>
       </div>
 
@@ -165,7 +165,7 @@
       <div class="border-t border-border-card my-2"></div>
       <a href="./industrias.html" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 hover:bg-white/5 rounded-lg" @click="closeMobileMenu()">🏭 Industrias</a>
       <a href="./eventos.html" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 hover:bg-white/5 rounded-lg" @click="closeMobileMenu()">📅 Eventos</a>
-      <a href="#" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 hover:bg-white/5 rounded-lg" @click="closeMobileMenu()">💬 Foro</a>
+      <a href="./index.html#comunidad" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 hover:bg-white/5 rounded-lg" @click="closeMobileMenu()">🌐 Comunidad</a>
       <a href="./contacto.html" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 hover:bg-white/5 rounded-lg" @click="closeMobileMenu()">✉️ Contacto</a>
       <!-- Currency mobile -->
       <div class="border-t border-border-card mt-2 pt-3 flex gap-2 px-3">
@@ -1117,6 +1117,144 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════════
+     PÁGINAS AMIGAS / COMUNIDAD
+═══════════════════════════════════════════════════════ -->
+<section id="comunidad" class="py-20 border-b border-border-card" style="background: #080c14;">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold mb-4 border border-blue-500/30" style="background: rgba(59,130,246,0.12); color: #93c5fd;">
+        🌐 COMUNIDAD
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-black text-white mb-3">Páginas <span style="color:#3b82f6">Amigas</span></h2>
+      <p class="text-slate-400 max-w-xl mx-auto">Proyectos, comunidades y herramientas de la red Meshtastic hispanohablante que recomendamos.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <!-- ── Sudoeste Mesh ── -->
+      <a href="https://github.com/sudoestemesh" target="_blank" rel="noopener"
+         class="group block rounded-2xl border border-border-card p-6 transition-all duration-300 hover:border-blue-500/50 hover:-translate-y-1"
+         style="background: #0f1624;">
+        <div class="flex items-center gap-4 mb-4">
+          <img src="./images/comunidad/sudoestemesh.jpg" alt="Sudoeste Mesh"
+               class="w-14 h-14 rounded-full border-2 border-border-card group-hover:border-blue-500/50 transition-all"
+               onerror="this.src=''" />
+          <div>
+            <h3 class="font-bold text-white group-hover:text-blue-300 transition-colors">Sudoeste Mesh</h3>
+            <p class="text-xs text-slate-500">@sudoestemesh · Argentina 🇦🇷</p>
+          </div>
+        </div>
+        <p class="text-slate-400 text-sm leading-relaxed mb-4">
+          Red pública de radios Meshtastic alimentadas con energía solar en Bahía Blanca y la zona. Cobertura: Sierra de la Ventana, Coronel Dorrego, Monte Hermoso, Tres Arroyos.
+        </p>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span class="badge badge-blue text-xs">Solar</span>
+          <span class="badge badge-slate text-xs">Bahía Blanca</span>
+          <span class="badge badge-slate text-xs">Mapa en vivo</span>
+          <span class="badge badge-slate text-xs">Gateway WhatsApp</span>
+        </div>
+        <div class="flex items-center gap-4 text-xs text-slate-500">
+          <span class="flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 4.999 3.187 9.246 7.627 10.748.557.104.762-.24.762-.534 0-.265-.01-.966-.015-1.896-3.098.673-3.752-1.491-3.752-1.491-.507-1.286-1.238-1.629-1.238-1.629-1.013-.691.077-.677.077-.677 1.12.079 1.71 1.149 1.71 1.149.994 1.703 2.608 1.211 3.243.926.101-.72.389-1.211.707-1.489-2.474-.28-5.076-1.236-5.076-5.501 0-1.216.434-2.208 1.146-2.987-.115-.281-.497-1.411.109-2.942 0 0 .934-.299 3.06 1.141A10.652 10.652 0 0112 6.342c.946.004 1.898.128 2.788.376 2.124-1.44 3.057-1.141 3.057-1.141.607 1.532.225 2.661.111 2.942.714.779 1.145 1.771 1.145 2.987 0 4.275-2.606 5.217-5.088 5.491.4.344.757 1.024.757 2.063 0 1.49-.014 2.689-.014 3.054 0 .296.202.643.766.534C20.816 21.244 24 16.998 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            GitHub
+          </span>
+          <span class="flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            @sudoestemesh
+          </span>
+        </div>
+        <div class="mt-3 pt-3 border-t border-border-card flex items-center gap-1 text-xs text-blue-400 group-hover:text-blue-300">
+          <span>somesh.com.ar</span>
+          <svg class="w-3 h-3 opacity-60 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </div>
+      </a>
+
+      <!-- ── Meshtastic Argentina ── -->
+      <a href="https://mesharg.com.ar/" target="_blank" rel="noopener"
+         class="group block rounded-2xl border border-border-card p-6 transition-all duration-300 hover:border-green-500/50 hover:-translate-y-1"
+         style="background: #0f1624;">
+        <div class="flex items-center gap-4 mb-4">
+          <img src="./images/comunidad/meshtastic-argentina.jpg" alt="Meshtastic Argentina"
+               class="w-14 h-14 rounded-full border-2 border-border-card group-hover:border-green-500/50 transition-all"
+               onerror="this.src=''" />
+          <div>
+            <h3 class="font-bold text-white group-hover:text-green-300 transition-colors">Meshtastic Argentina</h3>
+            <p class="text-xs text-slate-500">@Meshtastic-Argentina · 78 seguidores</p>
+          </div>
+        </div>
+        <p class="text-slate-400 text-sm leading-relaxed mb-4">
+          Comunidad argentina de Meshtastic. Investigación y ayuda cooperativa sobre la red en Argentina. Documentación, bots y herramientas open source.
+        </p>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span class="badge badge-slate text-xs">Comunidad</span>
+          <span class="badge badge-slate text-xs">Open Source</span>
+          <span class="badge badge-slate text-xs">Telegram</span>
+          <span class="badge badge-slate text-xs">Discord</span>
+        </div>
+        <div class="flex items-center gap-4 text-xs text-slate-500">
+          <span class="flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 4.999 3.187 9.246 7.627 10.748.557.104.762-.24.762-.534 0-.265-.01-.966-.015-1.896-3.098.673-3.752-1.491-3.752-1.491-.507-1.286-1.238-1.629-1.238-1.629-1.013-.691.077-.677.077-.677 1.12.079 1.71 1.149 1.71 1.149.994 1.703 2.608 1.211 3.243.926.101-.72.389-1.211.707-1.489-2.474-.28-5.076-1.236-5.076-5.501 0-1.216.434-2.208 1.146-2.987-.115-.281-.497-1.411.109-2.942 0 0 .934-.299 3.06 1.141A10.652 10.652 0 0112 6.342c.946.004 1.898.128 2.788.376 2.124-1.44 3.057-1.141 3.057-1.141.607 1.532.225 2.661.111 2.942.714.779 1.145 1.771 1.145 2.987 0 4.275-2.606 5.217-5.088 5.491.4.344.757 1.024.757 2.063 0 1.49-.014 2.689-.014 3.054 0 .296.202.643.766.534C20.816 21.244 24 16.998 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            GitHub Org
+          </span>
+          <span class="flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+            Telegram
+          </span>
+        </div>
+        <div class="mt-3 pt-3 border-t border-border-card flex items-center gap-1 text-xs text-green-400 group-hover:text-green-300">
+          <span>mesharg.com.ar</span>
+          <svg class="w-3 h-3 opacity-60 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </div>
+      </a>
+
+      <!-- ── Grumpy Bot ── -->
+      <a href="https://github.com/Meshtastic-Argentina/meshtastic_grumpy_bot" target="_blank" rel="noopener"
+         class="group block rounded-2xl border border-border-card p-6 transition-all duration-300 hover:border-purple-500/50 hover:-translate-y-1"
+         style="background: #0f1624;">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-14 h-14 rounded-full border-2 border-border-card group-hover:border-purple-500/50 transition-all flex items-center justify-center text-3xl shrink-0" style="background: #1a1030;">
+            🤖
+          </div>
+          <div>
+            <h3 class="font-bold text-white group-hover:text-purple-300 transition-colors">Meshtastic Grumpy Bot</h3>
+            <p class="text-xs text-slate-500">meshtastic_grumpy_bot · Python · ⭐ 9</p>
+          </div>
+        </div>
+        <p class="text-slate-400 text-sm leading-relaxed mb-4">
+          Bot Python de código abierto para Meshtastic. Responde mensajes en la red mesh: <code class="text-purple-300 bg-purple-900/30 px-1 rounded">/ping</code>, <code class="text-purple-300 bg-purple-900/30 px-1 rounded">/status</code>, RSSI/SNR y saludos automáticos (de mal humor, pero funcional).
+        </p>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span class="badge badge-slate text-xs">Python</span>
+          <span class="badge badge-slate text-xs">Open Source</span>
+          <span class="badge badge-slate text-xs">Meshtastic API</span>
+          <span class="badge badge-slate text-xs">⭐ 9 stars</span>
+        </div>
+        <div class="flex items-center gap-3 text-xs">
+          <span class="flex items-center gap-1 text-slate-500">
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+            <span style="font-family: monospace;">/ping · /status · /info</span>
+          </span>
+        </div>
+        <div class="mt-3 pt-3 border-t border-border-card flex items-center gap-1 text-xs text-purple-400 group-hover:text-purple-300">
+          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 4.999 3.187 9.246 7.627 10.748.557.104.762-.24.762-.534 0-.265-.01-.966-.015-1.896-3.098.673-3.752-1.491-3.752-1.491-.507-1.286-1.238-1.629-1.238-1.629-1.013-.691.077-.677.077-.677 1.12.079 1.71 1.149 1.71 1.149.994 1.703 2.608 1.211 3.243.926.101-.72.389-1.211.707-1.489-2.474-.28-5.076-1.236-5.076-5.501 0-1.216.434-2.208 1.146-2.987-.115-.281-.497-1.411.109-2.942 0 0 .934-.299 3.06 1.141A10.652 10.652 0 0112 6.342c.946.004 1.898.128 2.788.376 2.124-1.44 3.057-1.141 3.057-1.141.607 1.532.225 2.661.111 2.942.714.779 1.145 1.771 1.145 2.987 0 4.275-2.606 5.217-5.088 5.491.4.344.757 1.024.757 2.063 0 1.49-.014 2.689-.014 3.054 0 .296.202.643.766.534C20.816 21.244 24 16.998 24 12c0-6.627-5.373-12-12-12z"/></svg>
+          <span>Ver en GitHub</span>
+          <svg class="w-3 h-3 opacity-60 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- ¿Quieres aparecer aquí? CTA -->
+    <div class="mt-10 text-center">
+      <p class="text-slate-500 text-sm">
+        ¿Tenés un proyecto Meshtastic en Perú o LATAM?
+        <a href="./contacto.html" class="text-blue-400 hover:text-blue-300 font-semibold ml-1 transition-colors">Escribinos y aparecé aquí →</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
      NEWSLETTER
 ═══════════════════════════════════════════════════════ -->
 <section class="newsletter-section py-16">
@@ -1189,7 +1327,7 @@
           <li><a href="#" class="text-slate-400 hover:text-orange-400 text-sm transition-colors">Sobre nosotros</a></li>
           <li><a href="#" class="text-slate-400 hover:text-orange-400 text-sm transition-colors">Blog técnico</a></li>
           <li><a href="./eventos.html" class="text-slate-400 hover:text-orange-400 text-sm transition-colors">Eventos</a></li>
-          <li><a href="#" class="text-slate-400 hover:text-orange-400 text-sm transition-colors">Foro comunidad</a></li>
+          <li><a href="./index.html#comunidad" class="text-slate-400 hover:text-orange-400 text-sm transition-colors">Páginas amigas</a></li>
           <li><a href="./contacto.html" class="text-slate-400 hover:text-orange-400 text-sm transition-colors">Contacto</a></li>
           <li><a href="./industrias.html" class="text-slate-400 hover:text-orange-400 text-sm transition-colors">Soluciones empresariales</a></li>
         </ul>

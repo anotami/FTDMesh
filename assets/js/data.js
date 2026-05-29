@@ -1076,7 +1076,7 @@ const FTDMeshData = {
   config: {
     exchangeRate: 3.72,
     currency: "PEN",
-    whatsapp: "+51 999 888 777",
+    whatsapp: "+51 957 085 531",
     email: "info@ftdmesh.pe",
     discord: "https://discord.gg/ftdmesh",
     github: "https://github.com/ftdmesh",

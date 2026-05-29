@@ -428,7 +428,7 @@ const FTDMeshData = {
       slug: "antena-lora-5dbi",
       name: "Antena LoRa 915MHz 5dBi",
       pricePen: 85,
-      image: "./images/accesorios/antena-5dbi.webp",
+      image: "./images/accesorios/antena-5dbi.jpg",
       badges: ["915 MHz", "SMA", "Omnidireccional"],
       description: "Antena omnidireccional 5dBi para 915 MHz. Conector SMA macho. Aumenta el rango hasta 40% vs antena de stock.",
       stock: true
@@ -468,7 +468,7 @@ const FTDMeshData = {
       slug: "panel-solar-5w",
       name: "Panel Solar Portátil 5W",
       pricePen: 185,
-      image: "./images/accesorios/panel-solar-5w.webp",
+      image: "./images/accesorios/panel-solar-5w.jpg",
       badges: ["5W", "USB-C", "Plegable"],
       description: "Panel solar monocristalino 5W con salida USB-C. Ideal para mantener tus nodos activos en el campo sin conectar a la red.",
       stock: true

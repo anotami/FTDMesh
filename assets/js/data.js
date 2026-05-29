@@ -418,6 +418,34 @@ const FTDMeshData = {
         "Alimentación": "5V micro-USB",
         "Dimensiones": "~60 × 45 mm"
       }
+    },
+    {
+      id: 16,
+      slug: "wio-tracker-l1-pro",
+      name: "Wio Tracker L1 Pro",
+      series: "Seeed",
+      tier: "Media",
+      pricePen: 420,
+      image: "./images/dispositivos/wio-tracker-l1-pro.jpg",
+      badges: ["LoRa", "GPS", "Solar", "OLED", "Sin teléfono", "Joystick"],
+      capabilities: ["gps", "bluetooth", "solar", "standalone"],
+      description: "El Meshtastic más completo listo para usar. Pantalla OLED 1.3\", joystick de 4 vías para operar sin smartphone, GPS multi-constelación L76K, batería 2000mAh con 5 días de autonomía y carga solar. Viene con carcasa 3D incluida y Meshtastic pre-instalado.",
+      stock: true,
+      featured: true,
+      specs: {
+        "Banda": "862 – 930 MHz (915 MHz Perú)",
+        "LoRa chip": "Semtech SX1262",
+        "CPU": "Nordic nRF52840 @ 64 MHz · Cortex-M4",
+        "RAM": "256 KB RAM · 1 MB Flash",
+        "GPS": "Quectel L76K · GPS / BeiDou / GLONASS / QZSS",
+        "Pantalla": "1.3\" OLED 128×64",
+        "Control": "Joystick 4 vías · operación sin teléfono",
+        "Bluetooth": "5.0",
+        "Batería": "2000 mAh Li-ion · ~5 días de autonomía",
+        "Carga": "USB-C · Panel solar 5V-1A",
+        "Carcasa": "3D-printed incluida · lista para campo",
+        "Firmware": "Meshtastic pre-instalado"
+      }
     }
   ],
 

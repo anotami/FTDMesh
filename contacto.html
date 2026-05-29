@@ -303,74 +303,273 @@
 
     <div class="space-y-0">
 
+      <!-- 1 -->
       <div class="faq-item">
         <button class="faq-question" onclick="toggleFaqItem(this)" aria-expanded="false">
           ¿Qué es Meshtastic y cómo funciona?
-          <span class="faq-icon">
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-          </span>
+          <span class="faq-icon"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg></span>
         </button>
         <div class="faq-answer">
-          <p>Meshtastic es un firmware de código abierto que convierte módulos de radio LoRa en nodos de comunicación descentralizados. Los dispositivos forman automáticamente una red "mesh" donde cada nodo retransmite los mensajes de los demás, extendiendo el alcance sin necesidad de internet, celular o infraestructura.</p>
-          <p class="mt-2">Funciona en la banda ISM 915 MHz (legal en Perú), con alcances de 2–20 km dependiendo del terreno, y cifrado AES-256 nativo. Es 100% gratuito, sin suscripciones.</p>
+          <p><strong class="text-white">Meshtastic</strong> es un proyecto de código abierto (firmware + app) que convierte pequeños módulos de radio LoRa en nodos de comunicación descentralizados. No necesita internet, señal celular ni ninguna infraestructura externa. Funciona solo.</p>
+          <p class="mt-3">Cada dispositivo actúa simultáneamente como <strong class="text-orange-400">emisor, receptor y repetidor</strong>. Cuando enviás un mensaje, tu nodo lo transmite por radio; cualquier nodo cercano que lo recibe lo retransmite automáticamente hacia el destino, formando una cadena de hasta <strong class="text-white">7 saltos (hops)</strong>. Así se pueden cubrir distancias muy grandes con varios nodos.</p>
+          <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="bg-bg-main rounded-lg p-3 border border-border-card">
+              <p class="text-xs font-bold text-orange-400 mb-1">📡 Tecnología</p>
+              <p class="text-xs text-slate-400">Radio LoRa (Long Range) en 915 MHz. Modulación de espectro ensanchado (CSS) que permite comunicación incluso con señales muy débiles (-148 dBm).</p>
+            </div>
+            <div class="bg-bg-main rounded-lg p-3 border border-border-card">
+              <p class="text-xs font-bold text-orange-400 mb-1">🔒 Seguridad</p>
+              <p class="text-xs text-slate-400">Cifrado AES-256 nativo. Los mensajes viajan encriptados por el aire. Canales con clave privada configurables.</p>
+            </div>
+            <div class="bg-bg-main rounded-lg p-3 border border-border-card">
+              <p class="text-xs font-bold text-orange-400 mb-1">📱 App móvil</p>
+              <p class="text-xs text-slate-400">Se controla desde la app oficial Meshtastic (Android e iOS), por Bluetooth. Mapa GPS en tiempo real, mensajes de texto y telemetría.</p>
+            </div>
+            <div class="bg-bg-main rounded-lg p-3 border border-border-card">
+              <p class="text-xs font-bold text-orange-400 mb-1">💰 Costo</p>
+              <p class="text-xs text-slate-400">El firmware y la app son 100% gratuitos y sin suscripciones. Solo se paga el hardware una vez.</p>
+            </div>
+          </div>
+          <p class="mt-3 text-xs text-slate-500">Casos de uso comunes: senderismo y montañismo, comunicación en emergencias y desastres, agricultura de precisión, seguridad rural, rastreo de vehículos y activos sin SIM.</p>
         </div>
       </div>
 
+      <!-- 2 -->
       <div class="faq-item">
         <button class="faq-question" onclick="toggleFaqItem(this)" aria-expanded="false">
           ¿Es legal usar LoRa 915 MHz en el Perú?
-          <span class="faq-icon">
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-          </span>
+          <span class="faq-icon"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg></span>
         </button>
         <div class="faq-answer">
-          <p>Sí. La banda 915 MHz es una banda ISM (Industrial, Scientific and Medical) de uso libre en el Perú, regulada por el MTC (Ministerio de Transportes y Comunicaciones). No requiere licencia de radioaficionado para su uso en aplicaciones personales y comerciales con las potencias permitidas.</p>
-          <p class="mt-2">Los dispositivos que vendemos operan dentro de los límites de potencia establecidos por la regulación peruana (máximo 36 dBm / 4W EIRP). Todos son compatibles con las normas peruanas.</p>
+          <p><strong class="text-green-400">Sí, es completamente legal.</strong> La banda 902–928 MHz es una <strong class="text-white">banda ISM (Industrial, Scientific and Medical)</strong> de uso libre y sin licencia en el Perú, regulada por el <strong class="text-white">MTC (Ministerio de Transportes y Comunicaciones)</strong> bajo el Plan Nacional de Atribución de Frecuencias (PNAF).</p>
+          <p class="mt-3">No necesitás licencia de radioaficionado, ni registro previo, ni pago de canon al Estado para usar estos dispositivos. A diferencia de los radios VHF/UHF de comunicación, los módulos LoRa están en la misma categoría que el WiFi (2.4 GHz) o el Bluetooth.</p>
+          <div class="mt-3 space-y-2">
+            <div class="flex items-start gap-2 text-sm">
+              <span class="text-green-400 mt-0.5 shrink-0">✓</span>
+              <p class="text-slate-400"><strong class="text-white">Potencia permitida:</strong> hasta 1W (30 dBm) de potencia radiada. Todos los dispositivos del catálogo operan entre 14–22 dBm, muy por debajo del límite.</p>
+            </div>
+            <div class="flex items-start gap-2 text-sm">
+              <span class="text-green-400 mt-0.5 shrink-0">✓</span>
+              <p class="text-slate-400"><strong class="text-white">Uso personal y comercial:</strong> permitido para comunicación privada, IoT agrícola, monitoreo ambiental, seguridad y emergencias.</p>
+            </div>
+            <div class="flex items-start gap-2 text-sm">
+              <span class="text-green-400 mt-0.5 shrink-0">✓</span>
+              <p class="text-slate-400"><strong class="text-white">Importación:</strong> los módulos ingresan al país como dispositivos electrónicos de desarrollo (no como equipos de telecomunicaciones certificados), sin restricción aduanera especial.</p>
+            </div>
+            <div class="flex items-start gap-2 text-sm">
+              <span class="text-slate-500 mt-0.5 shrink-0">ℹ</span>
+              <p class="text-slate-500 text-xs">Nota: si planificás instalar una red mesh para uso público o comercial a gran escala (ej. cobertura de ciudad), puede ser recomendable consultar con un abogado en telecomunicaciones sobre requisitos adicionales del MTC.</p>
+            </div>
+          </div>
         </div>
       </div>
 
+      <!-- 3 -->
       <div class="faq-item">
         <button class="faq-question" onclick="toggleFaqItem(this)" aria-expanded="false">
           ¿Cuánto alcance tiene una red Meshtastic en los Andes?
-          <span class="faq-icon">
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-          </span>
+          <span class="faq-icon"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg></span>
         </button>
         <div class="faq-answer">
-          <p>En condiciones óptimas (línea de vista, terreno abierto), los dispositivos pueden alcanzar 10–20 km. En terreno andino con valles y montañas, el alcance práctico entre dos nodos es de 2–8 km.</p>
-          <p class="mt-2">La magia de Meshtastic está en la red mesh: si tienes 3 nodos en una ruta de senderismo espaciados 5 km, el mensaje "salta" de nodo en nodo, permitiendo comunicación a 10–15 km totales. Usando antenas de mayor ganancia (5–10 dBi) o nodos repetidores en puntos altos, puedes cubrir valles completos.</p>
+          <p>El alcance de LoRa depende de tres factores: <strong class="text-white">terreno, antena y configuración del spreading factor</strong>. En los Andes, las condiciones de alta altitud y baja densidad de edificios favorecen la propagación.</p>
+          <div class="mt-3 space-y-3">
+            <div class="bg-bg-main rounded-lg p-3 border border-border-card">
+              <p class="text-xs font-bold text-orange-400 mb-2">📍 Rangos típicos según terreno</p>
+              <div class="space-y-1.5 text-xs">
+                <div class="flex justify-between">
+                  <span class="text-slate-400">Lima urbano (edificios)</span>
+                  <span class="text-white font-semibold">1 – 3 km</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-400">Carretera / pampa costera</span>
+                  <span class="text-white font-semibold">8 – 20 km</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-400">Valle andino (lado a lado)</span>
+                  <span class="text-white font-semibold">3 – 10 km</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-400">Cresta andina con línea de vista</span>
+                  <span class="text-white font-semibold">20 – 60 km</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-400">Nodo repetidor en cima de cerro</span>
+                  <span class="text-white font-semibold">40 – 100+ km</span>
+                </div>
+              </div>
+            </div>
+            <p class="text-sm text-slate-400"><strong class="text-white">Récord mundial documentado:</strong> 254 km entre dos nodos con línea de vista directa (mar abierto). En los Andes peruanos, la comunidad ha logrado enlaces de 80–120 km entre cumbres.</p>
+            <p class="text-sm text-slate-400"><strong class="text-white">Red mesh en trekking:</strong> con nodos cada 5–8 km a lo largo de una ruta (ej. Camino Inca), podés cubrir 40–60 km totales con mensajes que saltan de nodo en nodo automáticamente.</p>
+            <p class="text-sm text-slate-400"><strong class="text-white">Truco andino:</strong> un solo nodo solar instalado en un paso de montaña (abra) actúa como repetidor y conecta valles enteros que de otra forma quedarían aislados.</p>
+          </div>
+          <p class="mt-3 text-xs text-slate-500">El spreading factor SF12 maximiza el alcance (a costa de menor velocidad: ~250 bps). Para redes con nodos cercanos, SF7 ofrece mayor throughput. Meshtastic ajusta esto automáticamente según el perfil de canal configurado.</p>
         </div>
       </div>
 
+      <!-- 4 -->
       <div class="faq-item">
         <button class="faq-question" onclick="toggleFaqItem(this)" aria-expanded="false">
           ¿Cuánto tarda el envío y a qué zonas llegan?
-          <span class="faq-icon">
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-          </span>
+          <span class="faq-icon"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg></span>
         </button>
         <div class="faq-answer">
-          <p>Enviamos a todo el Perú usando Shalom Express y Olva Courier:</p>
-          <ul class="mt-2 space-y-1 text-slate-400 list-disc list-inside">
-            <li>Lima Metropolitana: 1–2 días hábiles</li>
-            <li>Capitales de provincia: 2–4 días hábiles</li>
-            <li>Distritos remotos: 3–7 días hábiles</li>
-          </ul>
-          <p class="mt-2">Los pedidos se procesan el mismo día si se realizan antes de las 2pm (hora Lima). Envío gratis en pedidos mayores a S/. 500.</p>
+          <p>Enviamos a <strong class="text-white">todo el Perú</strong> vía Shalom Express y Olva Courier. Los pedidos realizados antes de las <strong class="text-white">2:00 pm (hora Lima)</strong> se despachan el mismo día hábil.</p>
+          <div class="mt-3 space-y-2">
+            <div class="flex items-center justify-between py-2 border-b border-border-card text-sm">
+              <div class="flex items-center gap-2"><span class="text-orange-400">📦</span><span class="text-slate-300">Lima Metropolitana</span></div>
+              <span class="text-white font-semibold text-xs">1 – 2 días hábiles</span>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-border-card text-sm">
+              <div class="flex items-center gap-2"><span class="text-orange-400">🏔️</span><span class="text-slate-300">Costa y sierra (capitales)</span></div>
+              <span class="text-white font-semibold text-xs">2 – 4 días hábiles</span>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-border-card text-sm">
+              <div class="flex items-center gap-2"><span class="text-orange-400">🌿</span><span class="text-slate-300">Selva y ciudades intermedias</span></div>
+              <span class="text-white font-semibold text-xs">3 – 6 días hábiles</span>
+            </div>
+            <div class="flex items-center justify-between py-2 text-sm">
+              <div class="flex items-center gap-2"><span class="text-orange-400">🗺️</span><span class="text-slate-300">Distritos remotos / frontera</span></div>
+              <span class="text-white font-semibold text-xs">5 – 10 días hábiles</span>
+            </div>
+          </div>
+          <div class="mt-3 space-y-1.5 text-sm">
+            <div class="flex items-start gap-2">
+              <span class="text-green-400 shrink-0">✓</span>
+              <p class="text-slate-400"><strong class="text-white">Envío gratis</strong> en pedidos mayores a <strong class="text-white">S/. 500</strong>. Pedidos menores tienen costo según destino (S/. 12–35).</p>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-green-400 shrink-0">✓</span>
+              <p class="text-slate-400"><strong class="text-white">Código de seguimiento</strong> enviado por WhatsApp al momento del despacho.</p>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-green-400 shrink-0">✓</span>
+              <p class="text-slate-400"><strong class="text-white">Empaque seguro:</strong> bolsa antiestática + espuma de protección + caja reforzada. Los dispositivos electrónicos van embalados contra golpes y estática.</p>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-green-400 shrink-0">✓</span>
+              <p class="text-slate-400">Emitimos <strong class="text-white">boleta o factura electrónica</strong>. Indicar RUC al momento de la compra.</p>
+            </div>
+          </div>
         </div>
       </div>
 
+      <!-- 5 -->
       <div class="faq-item">
         <button class="faq-question" onclick="toggleFaqItem(this)" aria-expanded="false">
           ¿Qué pasa si mi dispositivo llega dañado o con defecto?
-          <span class="faq-icon">
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-          </span>
+          <span class="faq-icon"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg></span>
         </button>
         <div class="faq-answer">
-          <p>Todos los dispositivos pasan por control de calidad antes del envío. Si recibes un producto con defecto de fábrica o dañado en el transporte, tienes 15 días calendario para reportarlo.</p>
-          <p class="mt-2">Proceso: (1) Contáctanos por WhatsApp con foto del defecto, (2) Coordinamos la devolución, (3) Enviamos reemplazo sin costo o procesamos reembolso completo.</p>
-          <p class="mt-2">Los daños por mal uso o modificaciones no están cubiertos. Consulta nuestra política completa de devoluciones para más detalles.</p>
+          <p>Todos los dispositivos pasan por <strong class="text-white">prueba de encendido y verificación de firmware</strong> antes del despacho. Si aun así llega con problema, te cubrimos:</p>
+          <div class="mt-3 space-y-3">
+            <div class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-orange-500/20 border border-orange-500/40 flex items-center justify-center text-xs font-bold text-orange-400 shrink-0 mt-0.5">1</div>
+              <div>
+                <p class="text-sm font-semibold text-white">Reportar dentro de 15 días calendario</p>
+                <p class="text-xs text-slate-400 mt-0.5">Escríbenos por WhatsApp con video o foto clara del defecto. Guardá el empaque original.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-orange-500/20 border border-orange-500/40 flex items-center justify-center text-xs font-bold text-orange-400 shrink-0 mt-0.5">2</div>
+              <div>
+                <p class="text-sm font-semibold text-white">Evaluación en 24–48h hábiles</p>
+                <p class="text-xs text-slate-400 mt-0.5">Analizamos el caso. Para defectos de fábrica evidentes (no enciende, pantalla rota al llegar, componente faltante), la aprobación es inmediata.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-orange-500/20 border border-orange-500/40 flex items-center justify-center text-xs font-bold text-orange-400 shrink-0 mt-0.5">3</div>
+              <div>
+                <p class="text-sm font-semibold text-white">Reemplazo sin costo o reembolso</p>
+                <p class="text-xs text-slate-400 mt-0.5">A tu elección: enviamos un dispositivo de reemplazo (flete pagado por FTDMESH) o procesamos el reembolso completo en 3–5 días hábiles al mismo método de pago.</p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4 rounded-lg border border-yellow-500/20 p-3" style="background: rgba(234,179,8,0.06);">
+            <p class="text-xs font-bold text-yellow-400 mb-1">⚠️ Qué NO cubre la garantía</p>
+            <ul class="text-xs text-slate-400 space-y-0.5 list-disc list-inside">
+              <li>Daños por caídas, golpes o contacto con agua después de recibido</li>
+              <li>Modificaciones de hardware o soldaduras propias</li>
+              <li>Cortocircuitos por alimentación incorrecta (voltaje mayor al especificado)</li>
+              <li>Mal uso del firmware (ej. flasheo incorrecto que brickea el dispositivo)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaqItem(this)" aria-expanded="false">
+          ¿Necesito conocimientos técnicos para configurar un dispositivo?
+          <span class="faq-icon"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg></span>
+        </button>
+        <div class="faq-answer">
+          <p><strong class="text-white">No para el uso básico.</strong> Los dispositivos llegan con el firmware Meshtastic ya instalado y pre-configurado para la banda 915 MHz de Perú. Simplemente encendés el dispositivo, abrís la app en tu celular, conectás por Bluetooth y ya podés chatear.</p>
+          <p class="mt-3">La <strong class="text-white">app Meshtastic</strong> (gratuita en Google Play y App Store) guía la configuración inicial paso a paso. No se necesita computadora ni saber programar.</p>
+          <div class="mt-3 space-y-2 text-sm">
+            <div class="flex items-start gap-2">
+              <span class="text-green-400 shrink-0">✓</span>
+              <p class="text-slate-400"><strong class="text-white">Configuración básica:</strong> nombre de nodo, canal de comunicación y parámetros de radio. Se hace desde la app en 5 minutos.</p>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-green-400 shrink-0">✓</span>
+              <p class="text-slate-400"><strong class="text-white">Configuración avanzada</strong> (MQTT, telemetría, canales múltiples): requiere algo más de tiempo pero hay documentación en español y soporte de FTDMESH por WhatsApp.</p>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-orange-400 shrink-0">★</span>
+              <p class="text-slate-400">Con la <strong class="text-white">Membresía Comunidad o Pro</strong>, incluimos una videollamada de configuración guiada para dejar tu red funcionando desde el primer día.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaqItem(this)" aria-expanded="false">
+          ¿Cuál es la diferencia entre los modelos? ¿Cuál me conviene?
+          <span class="faq-icon"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg></span>
+        </button>
+        <div class="faq-answer">
+          <p>Todos los dispositivos corren el mismo firmware Meshtastic y se comunican entre sí. La diferencia está en el <strong class="text-white">hardware: CPU, pantalla, GPS, autonomía y resistencia</strong>.</p>
+          <div class="mt-3 space-y-2 text-sm">
+            <div class="p-3 rounded-lg border border-border-card bg-bg-main">
+              <p class="font-bold text-slate-300 mb-1">🟢 Primera vez con Meshtastic</p>
+              <p class="text-xs text-slate-400">→ <strong class="text-white">Heltec LoRa32 V3 o V4</strong> (S/. 260–270). Compacto, USB-C, WiFi. Sin GPS pero ideal para aprender y armar tu primera red.</p>
+            </div>
+            <div class="p-3 rounded-lg border border-border-card bg-bg-main">
+              <p class="font-bold text-slate-300 mb-1">🟡 Trekking, montaña o campo</p>
+              <p class="text-xs text-slate-400">→ <strong class="text-white">T-Beam v1.2 / T-Beam Supreme / Heltec Wireless Tracker</strong>. GPS integrado para ver ubicación en el mapa. Batería 18650 intercambiable.</p>
+            </div>
+            <div class="p-3 rounded-lg border border-border-card bg-bg-main">
+              <p class="font-bold text-slate-300 mb-1">🔵 Comunicador táctico completo</p>
+              <p class="text-xs text-slate-400">→ <strong class="text-white">T-Deck Plus</strong> (S/. 740). Teclado QWERTY, pantalla touch 2.8", GPS y parlante. El más cómodo para escribir mensajes largos.</p>
+            </div>
+            <div class="p-3 rounded-lg border border-border-card bg-bg-main">
+              <p class="font-bold text-slate-300 mb-1">🟠 Nodo base / repetidor permanente</p>
+              <p class="text-xs text-slate-400">→ <strong class="text-white">Station G2</strong> (S/. 590). Ethernet, PoE, WiFi, potencia 30dBm. Para instalar fijo en techo o poste.</p>
+            </div>
+            <div class="p-3 rounded-lg border border-border-card bg-bg-main">
+              <p class="font-bold text-slate-300 mb-1">⚫ Industrial / campo extremo</p>
+              <p class="text-xs text-slate-400">→ <strong class="text-white">RAK WisBlock Rugged</strong> (S/. 850). IP67, -40°C a +85°C, conectores M12 herméticos. Para minas, plantas y ambientes hostiles.</p>
+            </div>
+          </div>
+          <p class="mt-3 text-xs text-slate-500">¿Tenés dudas sobre qué modelo elegir para tu caso específico? Escribinos por WhatsApp y te asesoramos sin compromiso.</p>
+        </div>
+      </div>
+
+      <!-- 8 -->
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaqItem(this)" aria-expanded="false">
+          ¿Puedo usar Meshtastic para comunicarme con nodos en otro país?
+          <span class="faq-icon"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg></span>
+        </button>
+        <div class="faq-answer">
+          <p><strong class="text-white">Por radio directa, no</strong> — el alcance físico del radio no llega a cruzar fronteras. Pero con <strong class="text-white">MQTT (protocolo de internet)</strong>, sí es posible conectar redes mesh de diferentes países.</p>
+          <p class="mt-3">Meshtastic tiene soporte nativo para <strong class="text-white">MQTT bridge</strong>: un nodo con WiFi o Ethernet (como el Station G2 o el T-Internet-COM) puede actuar de pasarela y publicar/recibir mensajes a través de un broker MQTT en internet. Así, tu nodo en Lima puede intercambiar mensajes con una red en Buenos Aires, Santiago o cualquier lugar del mundo que use el mismo broker y canal.</p>
+          <div class="mt-3 p-3 rounded-lg border border-blue-500/20" style="background: rgba(59,130,246,0.06);">
+            <p class="text-xs font-bold text-blue-400 mb-1">🌐 Red MQTT pública de Meshtastic</p>
+            <p class="text-xs text-slate-400">Existe una red MQTT pública (<code class="bg-bg-main px-1 rounded">mqtt.meshtastic.org</code>) donde ya se conectan miles de nodos de todo el mundo. Con configurar el bridge en tu nodo gateway, entrás a esa red global automáticamente.</p>
+          </div>
+          <p class="mt-3 text-xs text-slate-500">Para privacidad: los canales tienen clave AES-256. Solo quien conozca la clave de tu canal puede leer los mensajes, incluso si van por la red pública MQTT.</p>
         </div>
       </div>
 

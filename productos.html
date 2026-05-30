@@ -359,20 +359,7 @@
                       <p class="font-black text-xl text-white" x-text="price(product.pricePen)"></p>
                       <p class="text-xs text-slate-500">Precio unitario</p>
                     </div>
-                    <button @click="product.stock && addToCart({id: product.id, name: product.name, pricePen: product.pricePen, image: product.image})"
-                            :class="product.stock ? 'btn-primary' : 'btn-ghost cursor-not-allowed opacity-50'"
-                            :disabled="!product.stock"
-                            class="text-xs px-3 py-2">
-                      <template x-if="product.stock">
-                        <span class="flex items-center gap-1.5">
-                          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-                          + Carrito
-                        </span>
-                      </template>
-                      <template x-if="!product.stock">
-                        <span>Agotado</span>
-                      </template>
-                    </button>
+                    <span x-show="!product.stock" class="text-xs font-semibold text-red-400 bg-red-400/10 px-2 py-1 rounded-lg">Agotado</span>
                   </div>
                   <!-- Botón rápido WhatsApp -->
                   <button @click="quickWhatsApp(product)"
@@ -409,10 +396,7 @@
                 <div class="mt-auto pt-3 border-t border-border-card space-y-2">
                   <div class="flex items-center justify-between">
                     <p class="font-black text-xl text-white" x-text="price(acc.pricePen)"></p>
-                    <button @click="addToCart({id: acc.id, name: acc.name, pricePen: acc.pricePen, image: acc.image})" class="btn-primary text-xs px-3 py-2">
-                      <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-                      + Carrito
-                    </button>
+
                   </div>
                   <button @click="quickWhatsApp(acc)"
                           class="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-semibold text-white transition-all hover:opacity-90 active:scale-95"
@@ -468,7 +452,6 @@
                 <p class="text-xs text-green-400">Ahorras <span x-text="price(75)"></span> vs comprar separado</p>
               </div>
               <div class="flex flex-col gap-2 mt-2">
-              <button @click="addToCart({id:201, name:'Bundle Outdoor', pricePen:650, image:'./images/bundles/bundle-outdoor.webp'}" class="btn-primary">Agregar al carrito</button>
               <button @click="quickWhatsApp({name:'Bundle Outdoor', pricePen:650})"
                       class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90 active:scale-95"
                       style="background: linear-gradient(135deg, #25d366, #128c7e);">
@@ -514,7 +497,6 @@
                 <p class="text-xs text-green-400">Ahorras <span x-text="price(185)"></span> vs comprar separado</p>
               </div>
               <div class="flex flex-col gap-2 mt-2">
-              <button @click="addToCart({id:202, name:'Bundle Agro', pricePen:1850, image:'./images/bundles/bundle-agro.webp'}" class="btn-primary">Agregar al carrito</button>
               <button @click="quickWhatsApp({name:'Bundle Agro', pricePen:1850})"
                       class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90 active:scale-95"
                       style="background: linear-gradient(135deg, #25d366, #128c7e);">
@@ -560,7 +542,6 @@
                 <p class="text-xs text-green-400">Ahorras <span x-text="price(320)"></span> vs comprar separado</p>
               </div>
               <div class="flex flex-col gap-2 mt-2">
-              <button @click="addToCart({id:203, name:'Bundle Seguridad', pricePen:2400, image:'./images/bundles/bundle-seguridad.webp'}" class="btn-primary">Agregar al carrito</button>
               <button @click="quickWhatsApp({name:'Bundle Seguridad', pricePen:2400})"
                       class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90 active:scale-95"
                       style="background: linear-gradient(135deg, #25d366, #128c7e);">
@@ -606,7 +587,6 @@
                 <p class="text-xs text-green-400">Ahorras <span x-text="price(450)"></span> vs comprar separado</p>
               </div>
               <div class="flex flex-col gap-2 mt-2">
-              <button @click="addToCart({id:204, name:'Bundle Emergencias', pricePen:3100, image:'./images/bundles/bundle-emergencias.webp'}" class="btn-primary">Agregar al carrito</button>
               <button @click="quickWhatsApp({name:'Bundle Emergencias', pricePen:3100})"
                       class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90 active:scale-95"
                       style="background: linear-gradient(135deg, #25d366, #128c7e);">
@@ -705,11 +685,7 @@
                     <p class="font-black text-xl text-white" x-text="price(enc.pricePen)"></p>
                     <p class="text-xs text-slate-500">+ envío</p>
                   </div>
-                  <div class="flex gap-2">
-                    <button @click="addToCart({id: enc.id, name: enc.name, pricePen: enc.pricePen, image: enc.image})"
-                            class="btn-primary text-sm px-3 py-2">
-                      + Carrito
-                    </button>
+                  <div>
                     <button @click="quickWhatsApp(enc)"
                             class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90 active:scale-95"
                             style="background: linear-gradient(135deg, #25d366, #128c7e);">

@@ -290,7 +290,7 @@ const FTDMeshData = {
       badges: ["LoRa", "IP67", "Solar", "ESP32-S3"],
       capabilities: ["waterproof", "solar"],
       description: "Nodo cápsula autónomo con panel solar integrado y carcasa hermética IP67. ESP32-S3, SX1262 y batería LiPo 2000mAh. Diseñado para instalación permanente en campo sin necesidad de mantenimiento eléctrico. Reporta sensores I2C externos.",
-      stock: false,
+      stock: true,
       featured: false,
       specs: {
         "Banda": "868 / 915 MHz",

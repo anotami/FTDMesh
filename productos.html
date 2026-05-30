@@ -801,6 +801,13 @@
       </div>
       <p>Hecho con ❤️ en Perú</p>
     </div>
+    <div class="mt-5 flex justify-center">
+      <div class="inline-flex items-center gap-2 rounded-full border border-white/5 bg-white/3 px-4 py-1.5 text-xs text-slate-500">
+        <svg class="w-3.5 h-3.5 text-orange-500/60" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+        <span id="ftdmesh-visits" class="font-mono font-semibold text-orange-400/70">—</span>
+        <span>visitas totales al sitio</span>
+      </div>
+    </div>
   </div>
 </footer>
 
@@ -822,6 +829,23 @@
   </svg>
   <span class="text-white font-bold text-sm whitespace-nowrap max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300">Escríbenos</span>
 </a>
+
+<!-- ═══ ANALYTICS & VISIT COUNTER ════════════════════════════
+     GoatCounter: dashboard en https://ftdmesh.goatcounter.com
+     (registrarse gratis en goatcounter.com con el código "ftdmesh")
+═══════════════════════════════════════════════════════════ -->
+<script data-goatcounter="https://ftdmesh.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<script>
+(function(){
+  fetch("https://api.counterapi.dev/v1/ftdmesh-pe/visitas/up")
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      var el = document.getElementById("ftdmesh-visits");
+      if(el && d.count != null) el.textContent = Number(d.count).toLocaleString("es-PE");
+    }).catch(function(){});
+})();
+</script>
 
 </body>
 </html>

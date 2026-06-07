@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cómo Empezar — FTDMESH | Guía Meshtastic Perú</title>
+  <meta name="description" content="Guía completa para configurar tu primer nodo Meshtastic en Perú. Firmware, app, Bluetooth, región LoRa, canales, MQTT y GPS paso a paso." />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'bg-main':  '#080c14',
+            'bg-card':  '#0f1624',
+            'bg-hover': '#1a2340',
+            'border-card': '#1e2d4a',
+          }
+        }
+      }
+    }
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <link rel="stylesheet" href="./assets/css/style.css?v=2" />
+  <script src="./assets/js/data.js?v=2"></script>
+  <script src="./assets/js/main.js?v=2"></script>
+  <style>
+    .step-card { background:#0f1624; border:1px solid #1e2d4a; border-radius:16px; padding:28px 28px 24px; margin-bottom:32px; position:relative; }
+    .step-num { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:.95rem; flex-shrink:0; }
+    .value-block { background:#060a10; border:1px solid #1e2d4a; border-radius:8px; padding:10px 14px; font-family:monospace; font-size:.85rem; color:#93c5fd; }
+    .callout-info  { background:rgba(59,130,246,.08); border:1px solid rgba(59,130,246,.25); border-radius:10px; padding:14px 16px; }
+    .callout-warn  { background:rgba(234,179,8,.07);  border:1px solid rgba(234,179,8,.25);  border-radius:10px; padding:14px 16px; }
+    .callout-tip   { background:rgba(34,197,94,.08);  border:1px solid rgba(34,197,94,.25);  border-radius:10px; padding:14px 16px; }
+    .toc-link { display:block; padding:6px 14px; border-radius:8px; font-size:.82rem; color:#94a3b8; transition:all .15s; }
+    .toc-link:hover, .toc-link.active { background:rgba(249,115,22,.12); color:#f97316; }
+    .config-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #1e2d4a; }
+    .config-row:last-child { border-bottom:none; }
+    .tag-green { background:rgba(34,197,94,.15); color:#86efac; border-radius:6px; padding:2px 8px; font-size:.75rem; font-weight:700; }
+    .tag-orange { background:rgba(249,115,22,.15); color:#fdba74; border-radius:6px; padding:2px 8px; font-size:.75rem; font-weight:700; }
+    .tag-blue { background:rgba(59,130,246,.15); color:#93c5fd; border-radius:6px; padding:2px 8px; font-size:.75rem; font-weight:700; }
+    .tag-gray { background:rgba(148,163,184,.1); color:#94a3b8; border-radius:6px; padding:2px 8px; font-size:.75rem; font-weight:600; }
+  </style>
+</head>
+
+<body class="bg-bg-main text-slate-100" x-data="ftdmesh()" x-init="init()">
+
+<!-- ═══ NAVBAR ═══════════════════════════════════════════ -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 border-b border-border-card"
+     style="background: rgba(8,12,20,0.95); backdrop-filter: blur(20px);">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <a href="./index.html" class="flex items-center gap-2.5 shrink-0">
+        <div class="w-8 h-8 text-orange-500">
+          <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="3" fill="currentColor"/><path d="M16 16 Q20 10 26 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.9"/><path d="M16 16 Q21 16 27 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.7"/><path d="M16 16 Q12 10 6 8" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.6"/></svg>
+        </div>
+        <span class="font-bold text-xl tracking-tight text-slate-100">FTD<span style="color:#f97316">MESH</span></span>
+      </a>
+      <div class="hidden lg:flex items-center gap-1">
+        <div class="nav-item relative" @mouseenter="openDropdown('productos')" @mouseleave="closeDropdown()">
+          <button class="flex items-center gap-1 px-4 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5">
+            Productos <svg class="w-4 h-4 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="nav-dropdown" x-show="activeDropdown === 'productos'" x-transition:enter="transition ease-out duration-150" x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-1 translate-y-0">
+            <a href="./productos.html">📡 Dispositivos</a>
+            <a href="./productos.html#accesorios">🔧 Accesorios</a>
+            <a href="./productos.html#bundles">📦 Bundles</a>
+            <a href="./index.html#membresias">⭐ Membresías</a>
+            <a href="./como-empezar.html" style="color:#f97316;">📖 Cómo Empezar</a>
+          </div>
+        </div>
+        <div class="nav-item relative" @mouseenter="openDropdown('industrias')" @mouseleave="closeDropdown()">
+          <button class="flex items-center gap-1 px-4 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5">
+            Industrias <svg class="w-4 h-4 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="nav-dropdown" x-show="activeDropdown === 'industrias'" x-transition:enter="transition ease-out duration-150" x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-1 translate-y-0">
+            <a href="./industrias.html#outdoor">🏔️ Outdoor</a>
+            <a href="./industrias.html#agricultura">🌾 Agricultura</a>
+            <a href="./industrias.html#seguridad">🛡️ Seguridad</a>
+            <a href="./industrias.html#emergencias">🚨 Emergencias</a>
+            <a href="./industrias.html#mineria">⛏️ Minería</a>
+          </div>
+        </div>
+        <a href="./eventos.html" class="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5">Eventos</a>
+        <a href="./index.html#comunidad" class="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5">Comunidad</a>
+        <a href="./contacto.html" class="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5">Contacto</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="hidden sm:flex items-center bg-bg-card border border-border-card rounded-lg overflow-hidden text-xs font-bold">
+          <button @click="setCurrency('PEN')" :class="currency === 'PEN' ? 'bg-orange-500 text-white' : 'text-slate-400'" class="px-3 py-1.5 transition-all">PEN</button>
+          <button @click="setCurrency('USD')" :class="currency === 'USD' ? 'bg-orange-500 text-white' : 'text-slate-400'" class="px-3 py-1.5 transition-all">USD</button>
+        </div>
+        <button @click="cartOpen = true" class="relative flex items-center gap-2 bg-bg-card border border-border-card hover:border-orange-500/50 rounded-lg px-3 py-1.5 text-sm font-medium text-slate-300 hover:text-white transition-all">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          <span class="hidden sm:inline">Carrito</span>
+          <span x-show="cartCount > 0" x-text="cartCount" class="absolute -top-1.5 -right-1.5 w-5 h-5 bg-orange-500 text-white text-xs font-bold rounded-full flex items-center justify-center"></span>
+        </button>
+        <button @click="toggleMobileMenu()" class="lg:hidden p-2 rounded-lg border border-border-card text-slate-300">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-menu lg:hidden" :class="mobileMenuOpen ? 'open' : ''">
+    <div class="space-y-1">
+      <a href="./index.html" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 rounded-lg" @click="closeMobileMenu()">🏠 Inicio</a>
+      <a href="./productos.html" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 rounded-lg" @click="closeMobileMenu()">📡 Productos</a>
+      <a href="./como-empezar.html" class="flex items-center gap-2 px-3 py-2 text-sm text-orange-400 bg-orange-500/10 rounded-lg">📖 Cómo Empezar</a>
+      <a href="./industrias.html" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 rounded-lg" @click="closeMobileMenu()">🏭 Industrias</a>
+      <a href="./eventos.html" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 rounded-lg" @click="closeMobileMenu()">📅 Eventos</a>
+      <a href="./index.html#comunidad" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 rounded-lg" @click="closeMobileMenu()">🌐 Comunidad</a>
+      <a href="./contacto.html" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-orange-400 rounded-lg" @click="closeMobileMenu()">✉️ Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Cart sidebar -->
+<div x-show="cartOpen" class="cart-overlay" @click="cartOpen = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"></div>
+<div x-show="cartOpen" class="cart-sidebar" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full">
+  <div class="flex items-center justify-between p-5 border-b border-border-card shrink-0">
+    <div><h2 class="font-bold text-lg">Carrito</h2><p class="text-xs text-slate-500" x-text="`${cartCount} producto(s)`"></p></div>
+    <button @click="cartOpen = false" class="p-2 rounded-lg hover:bg-white/5 text-slate-400"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+  </div>
+  <div class="flex-1 overflow-y-auto p-5">
+    <div x-show="cartItems.length === 0" class="text-center py-12"><div class="text-4xl mb-3">🛒</div><p class="text-slate-400">Carrito vacío</p><a href="./productos.html" class="btn-primary text-sm mt-3 inline-flex">Ver productos</a></div>
+    <template x-for="item in cartItems" :key="item.id">
+      <div class="flex gap-3 bg-bg-main rounded-xl p-3 border border-border-card mb-3">
+        <img :src="item.image" :alt="item.name" class="w-14 h-14 rounded-lg object-cover shrink-0" />
+        <div class="flex-1 min-w-0"><p class="font-semibold text-sm" x-text="item.name"></p><p class="text-orange-500 font-bold text-sm" x-text="price(item.pricePen)"></p></div>
+        <button @click="removeFromCart(item.id)" class="text-slate-500 hover:text-red-400"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+      </div>
+    </template>
+  </div>
+  <div x-show="cartItems.length > 0" class="p-5 border-t border-border-card">
+    <div class="flex justify-between mb-3"><span class="text-slate-400 text-sm">Subtotal</span><span class="font-bold" x-text="cartSubtotal"></span></div>
+    <button class="btn-primary w-full justify-center">Ir al pago →</button>
+  </div>
+</div>
+
+<!-- ═══ HERO ══════════════════════════════════════════════ -->
+<div class="pt-16">
+  <div class="border-b border-border-card py-14 mesh-pattern">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav class="flex items-center gap-2 text-xs text-slate-500 mb-4">
+        <a href="./index.html" class="hover:text-slate-300">Inicio</a>
+        <span>/</span>
+        <span class="text-slate-300">Cómo Empezar</span>
+      </nav>
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold mb-4 border border-orange-500/30" style="background:rgba(249,115,22,0.12);color:#fdba74;">
+        📖 GUÍA DE CONFIGURACIÓN
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-black text-white mb-3">
+        Configurá tu primer<br><span style="color:#f97316">nodo Meshtastic</span>
+      </h1>
+      <p class="text-slate-400 text-lg max-w-2xl leading-relaxed mb-6">
+        De cero a nodo activo en la red. Esta guía te lleva paso a paso desde flashear el firmware hasta aparecer en el mapa de la comunidad peruana.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <div class="flex items-center gap-2 bg-bg-card border border-border-card rounded-lg px-3 py-2 text-sm">
+          <span class="text-green-400">✓</span><span class="text-slate-300">Tiempo estimado: <strong class="text-white">30–45 min</strong></span>
+        </div>
+        <div class="flex items-center gap-2 bg-bg-card border border-border-card rounded-lg px-3 py-2 text-sm">
+          <span class="text-blue-400">📡</span><span class="text-slate-300">Región: <strong class="text-white">ANZ — 915 MHz</strong></span>
+        </div>
+        <div class="flex items-center gap-2 bg-bg-card border border-border-card rounded-lg px-3 py-2 text-sm">
+          <span class="text-orange-400">🇵🇪</span><span class="text-slate-300">Adaptado para <strong class="text-white">Perú</strong></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CONTENT ═══════════════════════════════════════════ -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div class="flex gap-10">
+
+    <!-- ── Sidebar TOC ── -->
+    <aside class="hidden xl:block w-56 shrink-0">
+      <div class="sticky top-24">
+        <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">En esta página</p>
+        <nav class="space-y-0.5">
+          <a href="#requisitos"   class="toc-link">📦 Requisitos</a>
+          <a href="#firmware"     class="toc-link">⚡ 1. Instalar firmware</a>
+          <a href="#app"          class="toc-link">📱 2. Instalar la app</a>
+          <a href="#bluetooth"    class="toc-link">🔵 3. Conectar por BT</a>
+          <a href="#basica"       class="toc-link">⚙️ 4. Config. básica</a>
+          <a href="#lora"         class="toc-link">📡 5. Config. LoRa</a>
+          <a href="#canales"      class="toc-link">🔑 6. Canales</a>
+          <a href="#mqtt"         class="toc-link">🌐 7. MQTT</a>
+          <a href="#gps"          class="toc-link">📍 8. GPS y posición</a>
+          <a href="#roles"        class="toc-link">🗂 Roles de dispositivo</a>
+          <a href="#tips"         class="toc-link">🇵🇪 Tips para Perú</a>
+        </nav>
+        <div class="mt-6 p-3 rounded-xl border border-orange-500/20" style="background:rgba(249,115,22,0.06);">
+          <p class="text-xs text-slate-400 mb-2">¿Tenés dudas?</p>
+          <a href="https://wa.me/51957085531?text=Hola%2C%20necesito%20ayuda%20para%20configurar%20mi%20nodo%20Meshtastic" target="_blank"
+             class="text-xs font-bold text-orange-400 hover:text-orange-300">Escribinos por WhatsApp →</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── Main content ── -->
+    <main class="flex-1 min-w-0">
+
+      <!-- ── Requisitos ── -->
+      <section id="requisitos" class="mb-12">
+        <h2 class="text-2xl font-black text-white mb-6">📦 ¿Qué necesitás?</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+          <div class="bg-bg-card border border-border-card rounded-xl p-5">
+            <div class="text-3xl mb-3">📡</div>
+            <h3 class="font-bold text-white mb-1">Dispositivo Meshtastic</h3>
+            <p class="text-slate-400 text-sm">Cualquier dispositivo compatible: Heltec V3 Lite, T-Beam, SenseCap T1000-E, Tracker L1, etc.</p>
+            <a href="./productos.html" class="text-orange-400 text-xs font-semibold mt-2 inline-block hover:text-orange-300">Ver catálogo →</a>
+          </div>
+          <div class="bg-bg-card border border-border-card rounded-xl p-5">
+            <div class="text-3xl mb-3">📱</div>
+            <h3 class="font-bold text-white mb-1">Teléfono con BT 4.0+</h3>
+            <p class="text-slate-400 text-sm">Android 5.0+ o iPhone con iOS 14+. El Bluetooth es el canal de configuración principal.</p>
+          </div>
+          <div class="bg-bg-card border border-border-card rounded-xl p-5">
+            <div class="text-3xl mb-3">🔋</div>
+            <h3 class="font-bold text-white mb-1">Cable USB-C</h3>
+            <p class="text-slate-400 text-sm">Para alimentar el dispositivo y flashear el firmware desde la PC la primera vez.</p>
+          </div>
+        </div>
+        <div class="callout-info">
+          <p class="text-sm text-blue-300"><strong>ℹ️ Nota:</strong> Si compraste tu dispositivo en FTDMESH, el firmware ya viene pre-instalado. Podés saltarte el Paso 1 e ir directo a <a href="#app" class="underline">instalar la app</a>.</p>
+        </div>
+      </section>
+
+      <!-- ── Paso 1: Firmware ── -->
+      <section id="firmware" class="mb-12">
+        <div class="step-card">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="step-num" style="background:rgba(249,115,22,0.15);color:#f97316;">1</div>
+            <h2 class="text-xl font-black text-white">Instalar el firmware Meshtastic</h2>
+          </div>
+          <p class="text-slate-400 mb-5">El firmware es el software que corre dentro del dispositivo. Se instala una sola vez (y se actualiza cuando haya nuevas versiones).</p>
+
+          <h3 class="font-bold text-white mb-3">Opción A — Web Flasher (recomendado, sin instalar nada)</h3>
+          <ol class="space-y-3 mb-5">
+            <li class="flex gap-3 text-sm text-slate-300"><span class="font-bold text-orange-400 shrink-0">1.</span>Conectá el dispositivo a la PC con cable USB-C.</li>
+            <li class="flex gap-3 text-sm text-slate-300"><span class="font-bold text-orange-400 shrink-0">2.</span>Abrí <strong class="text-white">Google Chrome</strong> o Edge (otros navegadores no soportan Web Serial).</li>
+            <li class="flex gap-3 text-sm text-slate-300"><span class="font-bold text-orange-400 shrink-0">3.</span>Visitá <strong class="text-white">flasher.meshtastic.org</strong>, seleccioná tu dispositivo y hacé clic en <em>Flash</em>.</li>
+            <li class="flex gap-3 text-sm text-slate-300"><span class="font-bold text-orange-400 shrink-0">4.</span>Seleccioná el puerto COM/serial del dispositivo y esperá que termine (1–2 min).</li>
+            <li class="flex gap-3 text-sm text-slate-300"><span class="font-bold text-orange-400 shrink-0">5.</span>El dispositivo se reinicia solo con el firmware nuevo. La pantalla mostrará "Meshtastic".</li>
+          </ol>
+
+          <h3 class="font-bold text-white mb-3">Opción B — Python CLI</h3>
+          <div class="value-block mb-4">
+            <p class="text-slate-500 text-xs mb-1"># Instalar y ejecutar</p>
+            <p>pip install meshtastic</p>
+            <p>meshtastic --flash</p>
+          </div>
+
+          <div class="callout-warn">
+            <p class="text-sm text-yellow-300"><strong>⚠️ Importante:</strong> Si el dispositivo no aparece en el Web Flasher, probá con un cable diferente (algunos cables USB son solo de carga, no de datos). En Windows puede que necesites instalar el driver <strong>CH340</strong> o <strong>CP210x</strong>.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Paso 2: App ── -->
+      <section id="app" class="mb-12">
+        <div class="step-card">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="step-num" style="background:rgba(59,130,246,0.15);color:#60a5fa;">2</div>
+            <h2 class="text-xl font-black text-white">Instalar la app Meshtastic</h2>
+          </div>
+          <p class="text-slate-400 mb-5">La app oficial es gratuita y disponible en Android e iOS. Desde ella hacés toda la configuración y enviás mensajes.</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <a href="https://play.google.com/store/apps/details?id=com.geeksville.mesh" target="_blank" rel="noopener"
+               class="flex items-center gap-4 bg-bg-main border border-border-card rounded-xl p-4 hover:border-green-500/40 transition-all group">
+              <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0" style="background:#0a1f14;">🤖</div>
+              <div>
+                <p class="font-bold text-white group-hover:text-green-300 transition-colors">Android</p>
+                <p class="text-xs text-slate-500">Google Play Store</p>
+                <p class="text-xs text-slate-400 mt-1">Meshtastic · Geeksville</p>
+              </div>
+            </a>
+            <a href="https://apps.apple.com/app/meshtastic/id1586432531" target="_blank" rel="noopener"
+               class="flex items-center gap-4 bg-bg-main border border-border-card rounded-xl p-4 hover:border-blue-500/40 transition-all group">
+              <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0" style="background:#0a0f1f;">🍎</div>
+              <div>
+                <p class="font-bold text-white group-hover:text-blue-300 transition-colors">iPhone / iPad</p>
+                <p class="text-xs text-slate-500">Apple App Store</p>
+                <p class="text-xs text-slate-400 mt-1">Meshtastic · iOS 14+</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Paso 3: Bluetooth ── -->
+      <section id="bluetooth" class="mb-12">
+        <div class="step-card">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="step-num" style="background:rgba(99,102,241,0.15);color:#a5b4fc;">3</div>
+            <h2 class="text-xl font-black text-white">Conectar por Bluetooth</h2>
+          </div>
+          <p class="text-slate-400 mb-5">La app se comunica con el dispositivo vía Bluetooth. No necesitás WiFi ni internet para configurar.</p>
+          <ol class="space-y-4 mb-5">
+            <li class="flex gap-3">
+              <span class="font-bold text-indigo-400 shrink-0 w-5 text-sm">1.</span>
+              <div>
+                <p class="text-white text-sm font-semibold">Encendé el dispositivo</p>
+                <p class="text-slate-400 text-sm">Conectalo a una fuente USB o a una batería. En pantalla aparecerá "Meshtastic" y el nombre del nodo.</p>
+              </div>
+            </li>
+            <li class="flex gap-3">
+              <span class="font-bold text-indigo-400 shrink-0 w-5 text-sm">2.</span>
+              <div>
+                <p class="text-white text-sm font-semibold">Abrí la app y tocá "+"</p>
+                <p class="text-slate-400 text-sm">En la pantalla principal de la app, tocá el botón <strong class="text-white">+ Añadir nodo</strong>. La app escaneará dispositivos Meshtastic cercanos.</p>
+              </div>
+            </li>
+            <li class="flex gap-3">
+              <span class="font-bold text-indigo-400 shrink-0 w-5 text-sm">3.</span>
+              <div>
+                <p class="text-white text-sm font-semibold">Emparejá el dispositivo</p>
+                <p class="text-slate-400 text-sm">La app pedirá un código PIN. Lo encontrás en la pantalla del dispositivo (aparece cuando intentás conectarte). Si no tiene pantalla, buscalo en la documentación del fabricante o probá <strong class="text-white">123456</strong>.</p>
+              </div>
+            </li>
+            <li class="flex gap-3">
+              <span class="font-bold text-indigo-400 shrink-0 w-5 text-sm">4.</span>
+              <div>
+                <p class="text-white text-sm font-semibold">¡Conectado!</p>
+                <p class="text-slate-400 text-sm">La app mostrará el estado del nodo, batería, región y canales. Si la región dice "UNSET", pasá al siguiente paso.</p>
+              </div>
+            </li>
+          </ol>
+          <div class="callout-tip">
+            <p class="text-sm text-green-300"><strong>✅ Tip:</strong> Si el dispositivo no aparece en el escaneo, asegurate de tener Bluetooth activado en el celular y estar a menos de 5 metros del nodo.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Paso 4: Configuración básica ── -->
+      <section id="basica" class="mb-12">
+        <div class="step-card">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="step-num" style="background:rgba(249,115,22,0.15);color:#f97316;">4</div>
+            <h2 class="text-xl font-black text-white">Configuración básica del nodo</h2>
+          </div>
+          <p class="text-slate-400 mb-6">Desde la app, ve a <strong class="text-white">⚙️ Configuración → Dispositivo</strong>. Estos son los campos mínimos a configurar:</p>
+
+          <div class="bg-bg-main border border-border-card rounded-xl p-5 mb-5">
+            <div class="config-row">
+              <div>
+                <p class="text-sm font-semibold text-white">Nombre largo (Long Name)</p>
+                <p class="text-xs text-slate-500">Nombre completo visible en el mapa y en los mensajes</p>
+              </div>
+              <span class="value-block text-xs">ej: Pedro-Lima</span>
+            </div>
+            <div class="config-row">
+              <div>
+                <p class="text-sm font-semibold text-white">Nombre corto (Short Name)</p>
+                <p class="text-xs text-slate-500">Máximo 4 caracteres, se muestra en el mapa</p>
+              </div>
+              <span class="value-block text-xs">ej: PDRO</span>
+            </div>
+            <div class="config-row">
+              <div>
+                <p class="text-sm font-semibold text-white">Región LoRa</p>
+                <p class="text-xs text-slate-500">Frecuencia usada en Perú: 915 MHz banda ISM</p>
+              </div>
+              <span class="tag-orange">ANZ</span>
+            </div>
+            <div class="config-row">
+              <div>
+                <p class="text-sm font-semibold text-white">Rol del dispositivo</p>
+                <p class="text-xs text-slate-500">Para uso normal en movimiento o en casa</p>
+              </div>
+              <span class="tag-blue">CLIENT</span>
+            </div>
+          </div>
+
+          <div class="callout-warn">
+            <p class="text-sm text-yellow-300"><strong>⚠️ Región ANZ:</strong> En Perú se usa la banda de 915 MHz (igual que Australia/NZ y LATAM). Si dejás la región en UNSET, el nodo <strong>no transmitirá</strong>. Es el error más común de los principiantes.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Paso 5: LoRa ── -->
+      <section id="lora" class="mb-12">
+        <div class="step-card">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="step-num" style="background:rgba(34,197,94,0.15);color:#4ade80;">5</div>
+            <h2 class="text-xl font-black text-white">Configuración de radio LoRa</h2>
+          </div>
+          <p class="text-slate-400 mb-5">Ve a <strong class="text-white">⚙️ Configuración → Radio → LoRa</strong>. Estos parámetros definen el alcance y la velocidad de transmisión.</p>
+
+          <div class="bg-bg-main border border-border-card rounded-xl p-5 mb-5">
+            <div class="config-row">
+              <div>
+                <p class="text-sm font-semibold text-white">Preset del módem</p>
+                <p class="text-xs text-slate-500">Balance entre alcance y velocidad de datos</p>
+              </div>
+              <span class="tag-green">LONG_FAST</span>
+            </div>
+            <div class="config-row">
+              <div>
+                <p class="text-sm font-semibold text-white">Hop Limit (saltos máximos)</p>
+                <p class="text-xs text-slate-500">Cuántas veces puede retransmitir un mensaje</p>
+              </div>
+              <span class="value-block text-xs">3</span>
+            </div>
+            <div class="config-row">
+              <div>
+                <p class="text-sm font-semibold text-white">TX habilitado</p>
+                <p class="text-xs text-slate-500">Activar transmisión (debe estar ON)</p>
+              </div>
+              <span class="tag-green">Sí</span>
+            </div>
+            <div class="config-row">
+              <div>
+                <p class="text-sm font-semibold text-white">Potencia TX</p>
+                <p class="text-xs text-slate-500">Dejar en automático según el dispositivo</p>
+              </div>
+              <span class="tag-gray">Auto</span>
+            </div>
+          </div>
+
+          <h3 class="font-bold text-white mb-3">Comparativa de presets</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm border-collapse">
+              <thead>
+                <tr class="border-b border-border-card">
+                  <th class="text-left py-2 pr-4 text-xs font-bold text-slate-500 uppercase">Preset</th>
+                  <th class="text-left py-2 pr-4 text-xs font-bold text-slate-500 uppercase">Alcance</th>
+                  <th class="text-left py-2 pr-4 text-xs font-bold text-slate-500 uppercase">Velocidad</th>
+                  <th class="text-left py-2 text-xs font-bold text-slate-500 uppercase">Ideal para</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b border-border-card/50">
+                  <td class="py-2 pr-4 font-mono text-orange-400 font-bold">LONG_FAST</td>
+                  <td class="py-2 pr-4 text-slate-300">Muy alto</td>
+                  <td class="py-2 pr-4 text-slate-300">Media</td>
+                  <td class="py-2 text-slate-400">Uso general, urbano ✓ recomendado</td>
+                </tr>
+                <tr class="border-b border-border-card/50">
+                  <td class="py-2 pr-4 font-mono text-blue-400">LONG_SLOW</td>
+                  <td class="py-2 pr-4 text-slate-300">Máximo</td>
+                  <td class="py-2 pr-4 text-slate-300">Baja</td>
+                  <td class="py-2 text-slate-400">Zonas remotas, alta altitud</td>
+                </tr>
+                <tr class="border-b border-border-card/50">
+                  <td class="py-2 pr-4 font-mono text-green-400">MEDIUM_FAST</td>
+                  <td class="py-2 pr-4 text-slate-300">Alto</td>
+                  <td class="py-2 pr-4 text-slate-300">Alta</td>
+                  <td class="py-2 text-slate-400">Redes urbanas densas</td>
+                </tr>
+                <tr>
+                  <td class="py-2 pr-4 font-mono text-slate-400">SHORT_FAST</td>
+                  <td class="py-2 pr-4 text-slate-300">Corto</td>
+                  <td class="py-2 pr-4 text-slate-300">Muy alta</td>
+                  <td class="py-2 text-slate-400">Laboratorio o pruebas cercanas</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Paso 6: Canales ── -->
+      <section id="canales" class="mb-12">
+        <div class="step-card">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="step-num" style="background:rgba(168,85,247,0.15);color:#c084fc;">6</div>
+            <h2 class="text-xl font-black text-white">Configurar canales</h2>
+          </div>
+          <p class="text-slate-400 mb-5">Los canales son como frecuencias privadas dentro de la red. Un mensaje en un canal solo lo ven quienes tienen la misma clave. Ve a <strong class="text-white">⚙️ Configuración → Canales</strong>.</p>
+
+          <h3 class="font-bold text-white mb-3">Canal primario (default)</h3>
+          <div class="bg-bg-main border border-border-card rounded-xl p-5 mb-5">
+            <div class="config-row">
+              <div>
+                <p class="text-sm font-semibold text-white">Nombre del canal</p>
+                <p class="text-xs text-slate-500">Canal público de la comunidad global</p>
+              </div>
+              <span class="value-block text-xs">LongFast</span>
+            </div>
+            <div class="config-row">
+              <div>
+                <p class="text-sm font-semibold text-white">PSK (clave de cifrado)</p>
+                <p class="text-xs text-slate-500">Clave por defecto — igual en toda la red pública</p>
+              </div>
+              <span class="tag-gray">Default (AQ==)</span>
+            </div>
+            <div class="config-row">
+              <div>
+                <p class="text-sm font-semibold text-white">Uplink / Downlink MQTT</p>
+                <p class="text-xs text-slate-500">Para aparecer en los mapas en línea</p>
+              </div>
+              <span class="tag-green">Activado</span>
+            </div>
+          </div>
+
+          <div class="callout-info">
+            <p class="text-sm text-blue-300"><strong>ℹ️ Canal secundario:</strong> Podés crear hasta 8 canales adicionales con claves personalizadas para comunicaciones privadas con tu equipo. Solo quienes tengan la misma PSK podrán leer esos mensajes.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Paso 7: MQTT ── -->
+      <section id="mqtt" class="mb-12">
+        <div class="step-card">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="step-num" style="background:rgba(6,182,212,0.15);color:#22d3ee;">7</div>
+            <h2 class="text-xl font-black text-white">Conectar al servidor MQTT <span class="text-sm font-normal text-slate-500">(opcional)</span></h2>
+          </div>
+          <p class="text-slate-400 mb-5">MQTT permite que tu nodo se conecte a internet (vía WiFi o el celular como proxy) y reporte su posición a los mapas globales como MeshMap. Ve a <strong class="text-white">⚙️ Configuración → Red → MQTT</strong>.</p>
+
+          <div class="bg-bg-main border border-border-card rounded-xl p-5 mb-5">
+            <div class="config-row">
+              <div><p class="text-sm font-semibold text-white">Servidor</p></div>
+              <span class="value-block text-xs">mqtt.meshtastic.org</span>
+            </div>
+            <div class="config-row">
+              <div><p class="text-sm font-semibold text-white">Puerto</p></div>
+              <span class="value-block text-xs">1883</span>
+            </div>
+            <div class="config-row">
+              <div><p class="text-sm font-semibold text-white">Usuario</p></div>
+              <span class="value-block text-xs">meshdev</span>
+            </div>
+            <div class="config-row">
+              <div><p class="text-sm font-semibold text-white">Contraseña</p></div>
+              <span class="value-block text-xs">large4cats</span>
+            </div>
+            <div class="config-row">
+              <div><p class="text-sm font-semibold text-white">Root topic</p></div>
+              <span class="value-block text-xs">msh/ANZ</span>
+            </div>
+            <div class="config-row">
+              <div><p class="text-sm font-semibold text-white">TLS</p></div>
+              <span class="tag-gray">Desactivado</span>
+            </div>
+            <div class="config-row">
+              <div><p class="text-sm font-semibold text-white">Proxy desde la app</p></div>
+              <span class="tag-green">Activado</span>
+            </div>
+          </div>
+
+          <div class="callout-tip mb-3">
+            <p class="text-sm text-green-300"><strong>✅ Proxy desde app:</strong> Si tu dispositivo no tiene WiFi propio (como el Heltec V3 Lite), activá esta opción para que el celular actúe como puente de internet cuando están conectados por Bluetooth.</p>
+          </div>
+          <div class="callout-warn">
+            <p class="text-sm text-yellow-300"><strong>⚠️ Privacidad:</strong> Al activar MQTT con uplink en el canal primario, tu nodo y posición GPS serán visibles públicamente en meshmap.net. Si no querés esto, desactivá el uplink del canal o usá solo canales privados.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Paso 8: GPS ── -->
+      <section id="gps" class="mb-12">
+        <div class="step-card">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="step-num" style="background:rgba(34,197,94,0.15);color:#4ade80;">8</div>
+            <h2 class="text-xl font-black text-white">GPS y posición</h2>
+          </div>
+          <p class="text-slate-400 mb-5">Ve a <strong class="text-white">⚙️ Configuración → Posición</strong>. Esta sección controla cómo y cuándo el nodo reporta su ubicación.</p>
+
+          <div class="bg-bg-main border border-border-card rounded-xl p-5 mb-5">
+            <div class="config-row">
+              <div>
+                <p class="text-sm font-semibold text-white">Modo GPS</p>
+                <p class="text-xs text-slate-500">Para nodos con GPS integrado (T-Beam, T-Echo, etc.)</p>
+              </div>
+              <span class="tag-green">Habilitado</span>
+            </div>
+            <div class="config-row">
+              <div>
+                <p class="text-sm font-semibold text-white">Intervalo de actualización</p>
+                <p class="text-xs text-slate-500">Con qué frecuencia el nodo comparte su posición</p>
+              </div>
+              <span class="value-block text-xs">900 seg (15 min)</span>
+            </div>
+            <div class="config-row">
+              <div>
+                <p class="text-sm font-semibold text-white">Precisión de posición</p>
+                <p class="text-xs text-slate-500">Mayor = más preciso, menor = más privado</p>
+              </div>
+              <span class="value-block text-xs">13 (aprox. 100m)</span>
+            </div>
+            <div class="config-row">
+              <div>
+                <p class="text-sm font-semibold text-white">Transmitir posición</p>
+                <p class="text-xs text-slate-500">Para que otros nodos vean tu ubicación en el mapa</p>
+              </div>
+              <span class="tag-green">Habilitado</span>
+            </div>
+          </div>
+
+          <div class="callout-info">
+            <p class="text-sm text-blue-300"><strong>ℹ️ Sin GPS hardware:</strong> Si tu dispositivo no tiene GPS (ej: Heltec V3 Lite), podés activar la <strong>posición fija</strong> desde la app y cargar manualmente tu ubicación. Útil para nodos estacionarios o repetidores en azoteas.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Roles ── -->
+      <section id="roles" class="mb-12">
+        <h2 class="text-2xl font-black text-white mb-6">🗂 Roles de dispositivo</h2>
+        <p class="text-slate-400 mb-6">El rol define el comportamiento del nodo en la red. Se configura en <strong class="text-white">⚙️ Configuración → Dispositivo → Rol</strong>.</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="bg-bg-card border border-green-500/30 rounded-xl p-5">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="tag-green">CLIENT</span>
+              <span class="text-xs text-slate-500">Recomendado para usuarios</span>
+            </div>
+            <p class="text-slate-300 text-sm">Nodo estándar. Envía y recibe mensajes, comparte posición, y retransmite mensajes de otros. Acceso a todas las funciones de la app.</p>
+          </div>
+          <div class="bg-bg-card border border-border-card rounded-xl p-5">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="tag-gray">CLIENT_MUTE</span>
+              <span class="text-xs text-slate-500">Nodo silencioso</span>
+            </div>
+            <p class="text-slate-300 text-sm">Igual que CLIENT pero no retransmite mensajes de otros. Ideal para nodos muy cercanos entre sí o en zonas con mucha densidad de nodos.</p>
+          </div>
+          <div class="bg-bg-card border border-blue-500/30 rounded-xl p-5">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="tag-blue">ROUTER</span>
+              <span class="text-xs text-slate-500">Nodo de infraestructura</span>
+            </div>
+            <p class="text-slate-300 text-sm">Prioriza la retransmisión de mensajes. No usa la pantalla ni envía telemetría frecuente para ahorrar batería. Ideal para repetidores en cerros o azoteas.</p>
+          </div>
+          <div class="bg-bg-card border border-border-card rounded-xl p-5">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="tag-orange">REPEATER</span>
+              <span class="text-xs text-slate-500">Solo retransmisión</span>
+            </div>
+            <p class="text-slate-300 text-sm">Maximiza la función de repetidor. No procesa mensajes ni muestra datos en pantalla. Mínimo consumo de energía. Para nodos solares o de larga autonomía.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Tips Perú ── -->
+      <section id="tips" class="mb-12">
+        <h2 class="text-2xl font-black text-white mb-6">🇵🇪 Tips específicos para Perú</h2>
+        <div class="space-y-4">
+          <div class="flex gap-4 bg-bg-card border border-border-card rounded-xl p-5">
+            <div class="text-2xl shrink-0">🏔️</div>
+            <div>
+              <h3 class="font-bold text-white mb-1">Alta altitud = mejor alcance</h3>
+              <p class="text-slate-400 text-sm">En los Andes, la línea de vista entre nodos puede ser de 10–30 km. Un repetidor bien ubicado en un cerro puede cubrir toda una ciudad. El preset <strong class="text-white">LONG_SLOW</strong> maximiza el alcance en estas condiciones.</p>
+            </div>
+          </div>
+          <div class="flex gap-4 bg-bg-card border border-border-card rounded-xl p-5">
+            <div class="text-2xl shrink-0">📻</div>
+            <div>
+              <h3 class="font-bold text-white mb-1">Frecuencia legal en Perú: 915 MHz</h3>
+              <p class="text-slate-400 text-sm">El uso de la banda ISM 915 MHz es libre en Perú (sin licencia) para baja potencia, bajo la regulación del MTC. Siempre usá la región <strong class="text-white">ANZ</strong> en Meshtastic para operar en esta frecuencia.</p>
+            </div>
+          </div>
+          <div class="flex gap-4 bg-bg-card border border-border-card rounded-xl p-5">
+            <div class="text-2xl shrink-0">🌿</div>
+            <div>
+              <h3 class="font-bold text-white mb-1">Selva y zonas húmedas</h3>
+              <p class="text-slate-400 text-sm">La vegetación densa de la Amazonía absorbe mucho la señal LoRa. En estas zonas se recomienda antenas externas de mayor ganancia (5–8 dBi) y reducir el intervalo de posición para no saturar el canal.</p>
+            </div>
+          </div>
+          <div class="flex gap-4 bg-bg-card border border-border-card rounded-xl p-5">
+            <div class="text-2xl shrink-0">🔋</div>
+            <div>
+              <h3 class="font-bold text-white mb-1">Energía solar en zonas remotas</h3>
+              <p class="text-slate-400 text-sm">Para repetidores permanentes sin electricidad de red, un panel solar de 2W + batería de 2500 mAh es suficiente para un nodo Heltec en rol ROUTER con 24h de autonomía. El Tracker L1 ya incluye panel solar integrado.</p>
+            </div>
+          </div>
+          <div class="flex gap-4 bg-bg-card border border-border-card rounded-xl p-5">
+            <div class="text-2xl shrink-0">🌐</div>
+            <div>
+              <h3 class="font-bold text-white mb-1">Red de la comunidad peruana</h3>
+              <p class="text-slate-400 text-sm">Podés ver los nodos peruanos activos en <strong class="text-white">meshmap.net</strong>. La red más activa está en Lima y va creciendo hacia Arequipa, Cusco y Trujillo. Configurar MQTT con uplink te permite sumarte a esta red y aparecer en el mapa.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── CTA ── -->
+      <div class="rounded-2xl border border-orange-500/30 p-8 text-center" style="background:linear-gradient(135deg,rgba(249,115,22,0.08),rgba(249,115,22,0.04));">
+        <div class="text-4xl mb-3">🚀</div>
+        <h2 class="text-2xl font-black text-white mb-2">¿Listo para empezar?</h2>
+        <p class="text-slate-400 mb-6 max-w-lg mx-auto">Conseguí tu dispositivo Meshtastic con envío a todo el Perú. Si tenés dudas con la configuración, te ayudamos por WhatsApp.</p>
+        <div class="flex flex-wrap gap-3 justify-center">
+          <a href="./productos.html" class="btn-primary px-6 py-3">Ver dispositivos →</a>
+          <a href="https://wa.me/51957085531?text=Hola%2C%20quiero%20empezar%20con%20Meshtastic%20en%20Perú" target="_blank" rel="noopener"
+             class="btn-outline px-6 py-3 flex items-center gap-2">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.128.557 4.127 1.528 5.857L.057 23.882a.5.5 0 00.611.611l6.107-1.498A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.894 0-3.668-.523-5.188-1.432l-.364-.216-3.77.924.951-3.68-.237-.381A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            Consultar por WhatsApp
+          </a>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ════════════════════════════════════════════ -->
+<footer class="border-t border-border-card mt-20 py-12" style="background:#060a10;">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+      <div class="col-span-2 md:col-span-1">
+        <div class="flex items-center gap-2 mb-3">
+          <div class="w-7 h-7 text-orange-500"><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="3" fill="currentColor"/><path d="M16 16 Q20 10 26 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.9"/><path d="M16 16 Q21 16 27 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.7"/><path d="M16 16 Q12 10 6 8" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.6"/></svg></div>
+          <span class="font-bold text-lg text-slate-100">FTD<span style="color:#f97316">MESH</span></span>
+        </div>
+        <p class="text-slate-500 text-xs leading-relaxed">Comunicación off-grid para el Perú. Dispositivos Meshtastic LoRa disponibles en Lima con envío a todo el país.</p>
+      </div>
+      <div>
+        <p class="text-white font-bold text-sm mb-3">Productos</p>
+        <ul class="space-y-2">
+          <li><a href="./productos.html" class="text-slate-400 hover:text-orange-400 text-sm">Dispositivos</a></li>
+          <li><a href="./productos.html#accesorios" class="text-slate-400 hover:text-orange-400 text-sm">Accesorios</a></li>
+          <li><a href="./productos.html#bundles" class="text-slate-400 hover:text-orange-400 text-sm">Bundles</a></li>
+          <li><a href="./como-empezar.html" class="text-orange-400 text-sm font-semibold">Cómo empezar</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-white font-bold text-sm mb-3">Empresa</p>
+        <ul class="space-y-2">
+          <li><a href="./industrias.html" class="text-slate-400 hover:text-orange-400 text-sm">Industrias</a></li>
+          <li><a href="./eventos.html" class="text-slate-400 hover:text-orange-400 text-sm">Eventos</a></li>
+          <li><a href="./contacto.html" class="text-slate-400 hover:text-orange-400 text-sm">Contacto</a></li>
+          <li><a href="./index.html#comunidad" class="text-slate-400 hover:text-orange-400 text-sm">Comunidad</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-white font-bold text-sm mb-3">Soporte</p>
+        <ul class="space-y-2">
+          <li><a href="./contacto.html#faq" class="text-slate-400 hover:text-orange-400 text-sm">FAQ</a></li>
+          <li><a href="./como-empezar.html" class="text-slate-400 hover:text-orange-400 text-sm">Guía de inicio</a></li>
+          <li><a href="https://wa.me/51957085531" target="_blank" class="text-slate-400 hover:text-orange-400 text-sm">WhatsApp soporte</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-border-card pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+      <p>© 2025 FTDMESH. Todos los derechos reservados.</p>
+      <div class="flex gap-2">
+        <span class="payment-icon">VISA</span>
+        <span class="payment-icon">MASTERCARD</span>
+        <span class="payment-icon" style="color:#a78bfa;">YAPE</span>
+        <span class="payment-icon" style="color:#60a5fa;">PLIN</span>
+        <span class="payment-icon" style="color:#f97316;">NIUBIZ</span>
+      </div>
+      <p>Hecho con ❤️ en Perú</p>
+    </div>
+    <div class="mt-5 flex justify-center">
+      <div class="inline-flex items-center gap-2 rounded-full border border-white/5 bg-white/3 px-4 py-1.5 text-xs text-slate-500">
+        <svg class="w-3.5 h-3.5 text-orange-500/60" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 16 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+        <span id="ftdmesh-visits" class="font-mono font-semibold text-orange-400/70">—</span>
+        <span>visitas totales al sitio</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating WhatsApp -->
+<a href="https://wa.me/51957085531?text=%C2%A1Hola!%20Visité%20FTDMESH%20y%20quiero%20más%20información%20sobre%20los%20dispositivos%20Meshtastic%20🛒"
+   target="_blank" rel="noopener"
+   class="fixed bottom-6 right-6 z-50 group flex items-center gap-3 rounded-full shadow-2xl transition-all duration-300 hover:pr-5 active:scale-95"
+   style="background:linear-gradient(135deg,#25d366,#128c7e);padding:14px;box-shadow:0 4px 25px rgba(37,211,102,0.45);">
+  <svg class="w-7 h-7 text-white shrink-0" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.128.557 4.127 1.528 5.857L.057 23.882a.5.5 0 00.611.611l6.107-1.498A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.894 0-3.668-.523-5.188-1.432l-.364-.216-3.77.924.951-3.68-.237-.381A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+  </svg>
+  <span class="text-white font-bold text-sm whitespace-nowrap max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300">Escríbenos</span>
+</a>
+
+<script data-goatcounter="https://ftdmesh.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script>
+(function(){
+  fetch("https://api.counterapi.dev/v1/ftdmesh-pe/visitas/up")
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      var el = document.getElementById("ftdmesh-visits");
+      if(el && d.count != null) el.textContent = Number(d.count).toLocaleString("es-PE");
+    }).catch(function(){});
+})();
+</script>
+
+</body>
+</html>

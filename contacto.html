@@ -22,9 +22,9 @@
     }
   </script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
-  <link rel="stylesheet" href="./assets/css/style.css" />
-  <script src="./assets/js/data.js"></script>
-  <script src="./assets/js/main.js"></script>
+  <link rel="stylesheet" href="./assets/css/style.css?v=2" />
+  <script src="./assets/js/data.js?v=2"></script>
+  <script src="./assets/js/main.js?v=2"></script>
 </head>
 
 <body class="bg-bg-main text-slate-100" x-data="ftdmesh()" x-init="init()">
@@ -282,7 +282,7 @@
 
       <!-- 1 -->
       <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaqItem(this)" aria-expanded="false">
+        <button class="faq-question" aria-expanded="false">
           ¿Qué es Meshtastic y cómo funciona?
           <span class="faq-icon"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg></span>
         </button>
@@ -313,7 +313,7 @@
 
       <!-- 2 -->
       <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaqItem(this)" aria-expanded="false">
+        <button class="faq-question" aria-expanded="false">
           ¿Es legal usar LoRa 915 MHz en el Perú?
           <span class="faq-icon"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg></span>
         </button>
@@ -343,7 +343,7 @@
 
       <!-- 3 -->
       <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaqItem(this)" aria-expanded="false">
+        <button class="faq-question" aria-expanded="false">
           ¿Cuánto alcance tiene una red Meshtastic en los Andes?
           <span class="faq-icon"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg></span>
         </button>
@@ -385,7 +385,7 @@
 
       <!-- 4 -->
       <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaqItem(this)" aria-expanded="false">
+        <button class="faq-question" aria-expanded="false">
           ¿Cuánto tarda el envío y a qué zonas llegan?
           <span class="faq-icon"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg></span>
         </button>
@@ -432,7 +432,7 @@
 
       <!-- 5 -->
       <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaqItem(this)" aria-expanded="false">
+        <button class="faq-question" aria-expanded="false">
           ¿Qué pasa si mi dispositivo llega dañado o con defecto?
           <span class="faq-icon"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg></span>
         </button>
@@ -475,7 +475,7 @@
 
       <!-- 6 -->
       <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaqItem(this)" aria-expanded="false">
+        <button class="faq-question" aria-expanded="false">
           ¿Necesito conocimientos técnicos para configurar un dispositivo?
           <span class="faq-icon"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg></span>
         </button>
@@ -501,7 +501,7 @@
 
       <!-- 7 -->
       <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaqItem(this)" aria-expanded="false">
+        <button class="faq-question" aria-expanded="false">
           ¿Cuál es la diferencia entre los modelos? ¿Cuál me conviene?
           <span class="faq-icon"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg></span>
         </button>
@@ -535,7 +535,7 @@
 
       <!-- 8 -->
       <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaqItem(this)" aria-expanded="false">
+        <button class="faq-question" aria-expanded="false">
           ¿Puedo usar Meshtastic para comunicarme con nodos en otro país?
           <span class="faq-icon"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg></span>
         </button>
@@ -634,20 +634,6 @@
   <p class="text-sm font-medium" x-text="toast && toast.message"></p>
 </div>
 
-<script>
-function toggleFaqItem(btn) {
-  const item = btn.closest('.faq-item');
-  const wasOpen = item.classList.contains('open');
-  document.querySelectorAll('.faq-item.open').forEach(i => {
-    i.classList.remove('open');
-    i.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
-  });
-  if (!wasOpen) {
-    item.classList.add('open');
-    btn.setAttribute('aria-expanded', 'true');
-  }
-}
-</script>
 
 <!-- ═══ FLOATING WHATSAPP BUTTON ══════════════════════════ -->
 <a href="https://wa.me/51957085531?text=%C2%A1Hola!%20Visité%20FTDMESH%20y%20quiero%20más%20información%20sobre%20los%20dispositivos%20Meshtastic%20🛒"

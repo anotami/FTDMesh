@@ -586,6 +586,19 @@ const FTDMeshData = {
       useCases: ["Bomberos", "Defensa Civil", "PNP - Operaciones campo", "Rescate montaña"],
       description: "Infraestructura de comunicación para emergencias. Desplegable en minutos, funciona sin internet ni celular. Para cuando más importa.",
       savings: 450
+    },
+    {
+      id: 205,
+      slug: "bundle-maker-nodo",
+      name: "Bundle Maker: Arma tu Nodo",
+      pricePen: 345,
+      image: "./images/bundles/bundle-maker.webp",
+      industry: "Maker & Comunidad",
+      color: "purple",
+      includes: ["Heltec LoRa32 V3", "Carcasa H1 Minimal impresa", "Batería LiPo 3000mAh"],
+      useCases: ["Primer nodo Meshtastic", "Proyectos maker", "Comunidad LoRa", "Aprendizaje y pruebas"],
+      description: "El kit perfecto para armar tu primer nodo desde cero. Placa, carcasa impresa en Lima y batería. Listo para configurar con la guía Cómo Empezar de FTDMESH.",
+      savings: 45
     }
   ],
 
@@ -896,6 +909,7 @@ const FTDMeshData = {
   enclosures: [
     {
       id: 501,
+      useCase: "Portátil",
       slug: "heltec-v3-lite-case",
       name: "Case Heltec V3 Lite Compact",
       pricePen: 45,
@@ -913,6 +927,7 @@ const FTDMeshData = {
     },
     {
       id: 502,
+      useCase: "Táctico",
       slug: "tbeam-supreme-case",
       name: "Case T-Beam Supreme Táctico",
       pricePen: 65,
@@ -930,6 +945,7 @@ const FTDMeshData = {
     },
     {
       id: 503,
+      useCase: "Solar/Exterior",
       slug: "rak4631-modular-case",
       name: "Case RAK4631 Modular IP67",
       pricePen: 80,
@@ -947,6 +963,7 @@ const FTDMeshData = {
     },
     {
       id: 504,
+      useCase: "Portátil",
       slug: "techo-waterproof-case",
       name: "Case T-Echo Waterproof",
       pricePen: 55,
@@ -964,6 +981,7 @@ const FTDMeshData = {
     },
     {
       id: 505,
+      useCase: "Solar/Exterior",
       slug: "node-solar-enclosure",
       name: "Carcasa Nodo Solar Outdoor",
       pricePen: 95,
@@ -981,6 +999,7 @@ const FTDMeshData = {
     },
     {
       id: 506,
+      useCase: "Portátil",
       slug: "heltec-capsule-case",
       name: "Case Heltec Capsule Cilíndrico",
       pricePen: 40,
@@ -998,6 +1017,7 @@ const FTDMeshData = {
     },
     {
       id: 507,
+      useCase: "Táctico",
       slug: "tdeck-plus-case",
       name: "Case T-Deck Plus Protector",
       pricePen: 70,
@@ -1015,6 +1035,7 @@ const FTDMeshData = {
     },
     {
       id: 508,
+      useCase: "Táctico",
       slug: "rak-rugged-case",
       name: "Case RAK Rugged Militar",
       pricePen: 110,
@@ -1032,6 +1053,7 @@ const FTDMeshData = {
     },
     {
       id: 509,
+      useCase: "Portátil",
       slug: "mini-tracker-case",
       name: "Case Mini Tracker Ultra-Compact",
       pricePen: 35,
@@ -1049,6 +1071,7 @@ const FTDMeshData = {
     },
     {
       id: 510,
+      useCase: "Solar/Exterior",
       slug: "mesh-repeater-case",
       name: "Carcasa Repetidor Solar Mesh",
       pricePen: 120,
@@ -1066,6 +1089,7 @@ const FTDMeshData = {
     },
     {
       id: 511,
+      useCase: "Escritorio",
       slug: "universal-mesh-case",
       name: "Case Universal Mesh Node",
       pricePen: 50,
@@ -1083,6 +1107,7 @@ const FTDMeshData = {
     },
     {
       id: 512,
+      useCase: "Solar/Exterior",
       slug: "outdoor-pelican-case",
       name: "Nodo Outdoor Resistente",
       pricePen: 85,
@@ -1100,6 +1125,7 @@ const FTDMeshData = {
     },
     {
       id: 513,
+      useCase: "Táctico",
       slug: "meshtac-tactical-case",
       name: "MeshTac – Carcasa Táctica",
       pricePen: 75,
@@ -1118,6 +1144,7 @@ const FTDMeshData = {
     },
     {
       id: 514,
+      useCase: "Maker",
       slug: "heltec-v3-feature-case",
       name: "Heltec V3 Feature Case – GPS + Sensores",
       pricePen: 85,
@@ -1136,6 +1163,7 @@ const FTDMeshData = {
     },
     {
       id: 515,
+      useCase: "Portátil",
       slug: "h1-minimal-case",
       name: "H1 – Carcasa Minimal por muzi.works",
       pricePen: 45,
@@ -1154,6 +1182,7 @@ const FTDMeshData = {
     },
     {
       id: 516,
+      useCase: "Portátil",
       slug: "magsafe-t114-case",
       name: "MagSafe Heltec T114 – Meshtastic/MeshCore",
       pricePen: 65,
@@ -1172,6 +1201,7 @@ const FTDMeshData = {
     },
     {
       id: 517,
+      useCase: "Vehículo",
       slug: "shark-fin-radio-case",
       name: "Shark Fin Radio – Meshtastic/MeshCore",
       pricePen: 70,
@@ -1190,6 +1220,7 @@ const FTDMeshData = {
     },
     {
       id: 518,
+      useCase: "Solar/Exterior",
       slug: "solar-repeater-t114-case",
       name: "Repetidor Solar – Heltec T114",
       pricePen: 95,
@@ -1208,6 +1239,7 @@ const FTDMeshData = {
     },
     {
       id: 519,
+      useCase: "Dron",
       slug: "dji-mini2-meshtastic-mount",
       name: "Montura DJI Mini 2 – Nodo Aéreo",
       pricePen: 55,
@@ -1226,6 +1258,7 @@ const FTDMeshData = {
     },
     {
       id: 520,
+      useCase: "Escritorio",
       slug: "heltec-v4-desktop-case",
       name: "Heltec V4 Desktop – Nodo de Escritorio",
       pricePen: 45,
@@ -1244,6 +1277,7 @@ const FTDMeshData = {
     },
     {
       id: 521,
+      useCase: "Portátil",
       slug: "compact-meshcore-companion",
       name: "Compact MeshCore/Meshtastic Companion",
       pricePen: 55,
